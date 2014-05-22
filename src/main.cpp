@@ -2,9 +2,10 @@
 
 int main(int argc, char const *argv[])
 {
-	Window window;
+	Window *window = new Window;
 
-	window.run();
-	
+	window->run();
+	delete window;
+
 	return 0;
 }

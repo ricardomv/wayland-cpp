@@ -15,6 +15,8 @@ void Display::connect_to_fd(int fd){
 
 void Display::disconnect(){
 	wl_display_disconnect(display_);
+	display_ = NULL;
+	proxy_ = NULL;
 }
 int Display::get_fd(){
 	return wl_display_get_fd(display_);

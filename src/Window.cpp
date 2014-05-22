@@ -17,6 +17,18 @@ Window::Window() : display(new Display){
 	shellSurface->set_toplevel();
 }
 
+Window::~Window() {
+	delete shellSurface;
+	delete surface;
+	if (compositor)
+		delete compositor;
+	if (shell)
+		delete shell;
+	delete registry;
+	display->disconnect();
+	delete display;
+}
+
 void Window::HandleGlobal(void *data,
 				struct wl_registry *reg,
 				uint32_t name,
@@ -34,11 +46,7 @@ void Window::HandleGlobal(void *data,
 	}
 }
 void Window::HandleGlobalRemove(void *data, struct wl_registry *registry, uint32_t name){
-	Window *window = static_cast<Window *>(data);
-	if (window->compositor)
-		delete window->compositor;
-	if (window->shell)
-		delete window->shell;
+	//Window *window = static_cast<Window *>(data);
 }
 
 void Window::run(){

@@ -12,6 +12,7 @@ class Window
 {
 public:
 	Window();
+	~Window();
 	void run();
 private:
 	Display *display = NULL;

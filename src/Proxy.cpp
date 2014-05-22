@@ -4,7 +4,8 @@
 #include "Proxy.h"
 
 Proxy::~Proxy(){
-	wl_proxy_destroy(proxy_);
+	if (proxy_)
+		wl_proxy_destroy(proxy_);
 }
 
 void *Proxy::create(struct wl_proxy *factory,
