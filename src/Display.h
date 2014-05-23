@@ -3,9 +3,12 @@ class Display : public Proxy
 private:
 	struct wl_display *display_;
 public:
-	Display() {}
-	void connect(const char *name);
-	void connect_to_fd(int fd);
+	Display(struct wl_display *display) 
+					: Proxy((void *)display), 
+					display_(display) {}
+
+	static Display *connect(const char *name);
+	static Display *connect_to_fd(int fd);
 	void disconnect();
 	int get_fd();
 	int dispatch();

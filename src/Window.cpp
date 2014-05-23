@@ -5,8 +5,8 @@
 
 using namespace std;
 
-Window::Window() : display(new Display){
-	display->connect(NULL);
+Window::Window(){
+	display = Display::connect(NULL);
 	registry = display->get_registry();
 	static const struct wl_registry_listener registry_all = { Window::HandleGlobal, Window::HandleGlobalRemove};
 	registry->add_listener((const struct wl_listener *)&registry_all, (void *)this);

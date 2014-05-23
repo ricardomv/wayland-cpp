@@ -3,14 +3,12 @@
 #include "Registry.h"
 #include "Display.h"
 
-void Display::connect(const char *name){
-	display_ = wl_display_connect(name);
-	proxy_ = (struct wl_proxy *)display_;
+Display *Display::connect(const char *name){
+	return new Display(wl_display_connect(name));
 }
 
-void Display::connect_to_fd(int fd){
-	display_ = wl_display_connect_to_fd(fd);
-	proxy_ = (struct wl_proxy *)display_;
+Display *Display::connect_to_fd(int fd){
+	return new Display(wl_display_connect_to_fd(fd));
 }
 
 void Display::disconnect(){
