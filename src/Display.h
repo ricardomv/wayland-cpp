@@ -1,3 +1,9 @@
+#ifndef __DISPLAY_H_INCLUDED__
+#define __DISPLAY_H_INCLUDED__
+
+#include "Proxy.h"
+#include "Registry.h"
+
 class Display : public Proxy
 {
 private:
@@ -26,3 +32,4 @@ public:
 
 	Registry *get_registry();
 };
+#endif

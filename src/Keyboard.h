@@ -4,6 +4,8 @@
 #include <iostream>
 using namespace std;
 
+#include "Proxy.h"
+
 class Keyboard : public Proxy
 {
 public:

@@ -1,6 +1,7 @@
 #ifndef __SEAT_H_INCLUDED__
 #define __SEAT_H_INCLUDED__
 
+#include "Proxy.h"
 #include "Keyboard.h"
 
 class Seat : public Proxy

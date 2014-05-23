@@ -1,6 +1,4 @@
 #include <wayland-client.h>
-#include "Proxy.h"
-#include "Registry.h"
 #include "Display.h"
 
 Display *Display::connect(const char *name){

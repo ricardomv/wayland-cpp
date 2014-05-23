@@ -1,3 +1,8 @@
+#ifndef __REGISTRY_H_INCLUDED__
+#define __REGISTRY_H_INCLUDED__
+
+#include "Proxy.h"
+
 class Registry : public Proxy
 {
 public:
@@ -7,3 +12,4 @@ public:
 		return (void *)this->marshal_constructor(WL_REGISTRY_BIND, interface, name, interface->name, version, NULL);
 	}
 };
+#endif

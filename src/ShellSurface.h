@@ -1,3 +1,8 @@
+#ifndef __SHELLSURFACE_H_INCLUDED__
+#define __SHELLSURFACE_H_INCLUDED__
+
+#include "Proxy.h"
+
 class ShellSurface : public Proxy
 {
 public:
@@ -43,3 +48,4 @@ public:
 		this->marshal(WL_SHELL_SURFACE_SET_CLASS, class_);
 	}
 };
+#endif

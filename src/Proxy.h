@@ -1,3 +1,6 @@
+#ifndef __PROXY_H_INCLUDED__
+#define __PROXY_H_INCLUDED__
+
 class Proxy
 {
 protected:
@@ -28,3 +31,4 @@ public:
 	const char *get_class();
 	void set_queue(struct wl_event_queue *queue);
 };
+#endif

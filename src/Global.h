@@ -1,6 +1,10 @@
 #include <iostream>
 #include <string.h>
 
+#include "Shell.h"
+#include "Compositor.h"
+#include "Seat.h"
+
 using namespace std;
 
 class Global
