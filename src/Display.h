@@ -10,7 +10,7 @@ private:
 	struct wl_display *display_;
 public:
 	Display(struct wl_display *display) 
-					: Proxy((void *)display), 
+					: Proxy((struct wl_proxy *)display), 
 					display_(display) {}
 
 	static Display *connect(const char *name);

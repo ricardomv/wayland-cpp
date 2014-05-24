@@ -8,22 +8,22 @@ Proxy::~Proxy(){
 		wl_proxy_destroy(proxy_);
 }
 
-void *Proxy::create(struct wl_proxy *factory,
+struct wl_proxy *Proxy::create(struct wl_proxy *factory,
 					const struct wl_interface *interface){
-	return new Proxy(wl_proxy_create(factory,interface));
+	return wl_proxy_create(factory,interface);
 }
 
-void *Proxy::marshal_constructor(uint32_t opcode,
+struct wl_proxy *Proxy::marshal_constructor(uint32_t opcode,
 					const struct wl_interface *interface,
 					...){
 	va_list args;
 	va_start(args, interface);
-	void *aux = wl_proxy_vmarshal_constructor(proxy_, opcode, interface, args);
+	struct wl_proxy *aux = wl_proxy_vmarshal_constructor(proxy_, opcode, interface, args);
 	va_end(args);
 	return aux;
 }
 
-void *Proxy::marshal_array_constructor(uint32_t opcode, union wl_argument *args,
+struct wl_proxy *Proxy::marshal_array_constructor(uint32_t opcode, union wl_argument *args,
 					const struct wl_interface *interface){
 	return NULL;
 }

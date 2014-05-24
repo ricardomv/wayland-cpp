@@ -10,7 +10,7 @@ class Keyboard : public Proxy
 {
 public:
 	Keyboard() {}
-	Keyboard(void *proxy): Proxy(proxy) {
+	Keyboard(struct wl_proxy *proxy) : Proxy(proxy) {
 		static const struct wl_keyboard_listener keyboard_listener = {
 			Keyboard::HandleKeymap,
 			Keyboard::HandleEnter,

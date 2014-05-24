@@ -6,7 +6,7 @@
 class ShellSurface : public Proxy
 {
 public:
-	ShellSurface(void *proxy): Proxy(proxy) {}
+	using Proxy::Proxy;
 
 	void pong(uint32_t serial){
 		this->marshal(WL_SHELL_SURFACE_PONG, serial);

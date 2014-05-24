@@ -5,17 +5,17 @@ class Proxy
 {
 protected:
 	struct wl_proxy *proxy_ = NULL;
-	Proxy(void *proxy) : proxy_(static_cast<struct wl_proxy *>(proxy)) {}
 public:
+	Proxy(struct wl_proxy *proxy) : proxy_(proxy) {}
 	Proxy() {}
 	~Proxy();
 
-	void *create(struct wl_proxy *factory,
+	struct wl_proxy *create(struct wl_proxy *factory,
 					const struct wl_interface *interface);
-	void *marshal_constructor(uint32_t opcode,
+	struct wl_proxy *marshal_constructor(uint32_t opcode,
 					const struct wl_interface *interface,
 					...);
-	void *marshal_array_constructor(uint32_t opcode, union wl_argument *args,
+	struct wl_proxy *marshal_array_constructor(uint32_t opcode, union wl_argument *args,
 					const struct wl_interface *interface);
 	void marshal(uint32_t opcode, ...);
 	void marshal_array(uint32_t opcode,
