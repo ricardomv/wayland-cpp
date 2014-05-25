@@ -18,7 +18,7 @@ public:
 			Keyboard::HandleKey,
 			Keyboard::HandleModifiers,
 		};
-		this->add_listener((const struct wl_listener *)&keyboard_listener, this);
+		add_listener((const struct wl_listener *)&keyboard_listener, this);
 	}
 	static void HandleKeymap(void *data, struct wl_keyboard *keyboard,
 		       uint32_t format, int fd, uint32_t size) {}

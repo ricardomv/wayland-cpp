@@ -10,7 +10,7 @@ public:
 	using Proxy::Proxy;
 
 	Surface *create_surface() {
-		return new Surface(this->marshal_constructor(WL_COMPOSITOR_CREATE_SURFACE, &wl_surface_interface, this));
+		return new Surface(marshal_constructor(WL_COMPOSITOR_CREATE_SURFACE, &wl_surface_interface, this));
 	}
 };
 #endif

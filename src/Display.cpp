@@ -67,7 +67,7 @@ int Display::read_events(){
 }
 
 Registry *Display::get_registry(){
-	return new Registry(this->marshal_constructor( 
+	return new Registry(marshal_constructor( 
 										WL_DISPLAY_GET_REGISTRY, 
 										&wl_registry_interface, 
 										NULL));

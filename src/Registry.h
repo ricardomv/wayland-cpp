@@ -9,7 +9,7 @@ public:
 	using Proxy::Proxy;
 
 	struct wl_proxy *bind(uint32_t name,const struct wl_interface *interface, uint32_t version) {
-		return this->marshal_constructor(WL_REGISTRY_BIND, interface, name, interface->name, version, NULL);
+		return marshal_constructor(WL_REGISTRY_BIND, interface, name, interface->name, version, NULL);
 	}
 };
 #endif
