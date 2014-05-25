@@ -14,6 +14,7 @@ namespace wayland {
 #include "Shell.h"
 
 #include "Keyboard.h"
+#include "Pointer.h"
 #include "Surface.h"
 #include "ShellSurface.h"
 

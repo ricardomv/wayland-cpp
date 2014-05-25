@@ -4,7 +4,9 @@ Window::Window(){
 	display = Display::connect(NULL);
 	global = new Global(display->get_registry()); 
 	display->roundtrip();
-	Keyboard(global->seat->get_keyboard());
+	input = new Input();
+	input->add(global->seat->get_keyboard());
+	input->add(global->seat->get_pointer());
 	surface = global->compositor->create_surface();
 	shellSurface = global->shell->get_shell_surface(surface);
 	shellSurface->set_title("new window");
@@ -15,6 +17,7 @@ Window::~Window() {
 	delete shellSurface;
 	delete surface;
 	delete global;
+	delete input;
 	display->disconnect();
 	delete display;
 }
