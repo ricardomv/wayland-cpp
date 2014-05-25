@@ -13,7 +13,7 @@ def configure(cnf):
 
 def build(bld):
 	bld(features='cxx cxxprogram', 
-		source='src/main.cpp src/Display.cpp src/Proxy.cpp src/Window.cpp',
-		cxxflags=['-Wall','-g', '-std=c++11'],
+		source='src/main.cpp src/Window.cpp',
+		cxxflags=['-Wall','-g', '-std=c++11', '-I../src/wlplus'],
 		use=['SH_LIBS'],
 		target='wl_term')
