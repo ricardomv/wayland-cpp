@@ -1,9 +1,6 @@
 #ifndef __KEYBOARD_H_INCLUDED__
 #define __KEYBOARD_H_INCLUDED__
 
-#include <iostream>
-using namespace std;
-
 #include "Proxy.h"
 
 class Keyboard : public Proxy
@@ -24,7 +21,7 @@ public:
 		       uint32_t format, int fd, uint32_t size) {}
 	static void HandleEnter(void *data, struct wl_keyboard *keyboard,
 		      uint32_t serial, struct wl_surface *surface,
-		      struct wl_array *keys) {cout << serial << endl;}
+		      struct wl_array *keys) {}
 	static void HandleLeave(void *data, struct wl_keyboard *keyboard,
 		      uint32_t serial, struct wl_surface *surface) {}
 	static void HandleKey(void *data, struct wl_keyboard *keyboard,

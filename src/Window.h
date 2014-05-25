@@ -1,4 +1,4 @@
-#include "wlplus"
+#include <wlplus>
 using namespace wayland;
 
 #include "Global.h"
