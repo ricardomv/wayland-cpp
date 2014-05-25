@@ -2,8 +2,7 @@
 
 Window::Window(){
 	display = Display::connect(NULL);
-	registry = display->get_registry();
-	global = new Global(registry); 
+	global = new Global(display->get_registry()); 
 	display->roundtrip();
 	Keyboard(global->seat->get_keyboard());
 	surface = global->compositor->create_surface();
@@ -15,7 +14,6 @@ Window::Window(){
 Window::~Window() {
 	delete shellSurface;
 	delete surface;
-	delete registry;
 	delete global;
 	display->disconnect();
 	delete display;

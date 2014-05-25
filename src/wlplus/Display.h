@@ -63,11 +63,10 @@ public:
 	int read_events(){
 		return wl_display_read_events(display_);
 	}
-	Registry *get_registry(){
-		return new Registry(marshal_constructor( 
-										WL_DISPLAY_GET_REGISTRY, 
-										&wl_registry_interface, 
-										NULL));
+	struct wl_registry *get_registry(){
+		return (struct wl_registry *)marshal_constructor(WL_DISPLAY_GET_REGISTRY, 
+									&wl_registry_interface, 
+									NULL);
 	}
 
 };

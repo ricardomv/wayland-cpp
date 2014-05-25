@@ -11,7 +11,6 @@ public:
 	void run();
 private:
 	Display *display = NULL;
-	Registry *registry = NULL;
 	Global *global = NULL;
 	Surface *surface = NULL;
 	ShellSurface *shellSurface = NULL;
