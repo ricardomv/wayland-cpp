@@ -1,0 +1,22 @@
+#ifndef __WLPLUS_INCLUDED__
+#define __WLPLUS_INCLUDED__
+
+#include <wayland-client.h>
+
+namespace wayland {
+
+#include "Proxy.h"
+#include "Display.h"
+#include "Registry.h"
+
+#include "Compositor.h"
+#include "Seat.h"
+#include "Shell.h"
+
+#include "Keyboard.h"
+#include "Surface.h"
+#include "ShellSurface.h"
+
+} // namespace wayland
+
+#endif

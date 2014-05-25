@@ -1,10 +1,9 @@
 #include <iostream>
 #include <string.h>
 
-#include "Shell.h"
-#include "Compositor.h"
-#include "Seat.h"
+#include <wlplus>
 
+using namespace wayland;
 using namespace std;
 
 class Global

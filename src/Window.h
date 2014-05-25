@@ -1,11 +1,7 @@
-#include <wayland-client.h>
+#include "wlplus"
+using namespace wayland;
 
-#include "Proxy.h"
-#include "Registry.h"
-#include "Display.h"
 #include "Global.h"
-#include "Surface.h"
-#include "ShellSurface.h"
 
 class Window : public Keyboard
 {
