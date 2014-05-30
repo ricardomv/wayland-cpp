@@ -2,7 +2,6 @@
 #define __DISPLAY_H_INCLUDED__
 
 #include "Proxy.h"
-#include "Registry.h"
 
 class Display : public Proxy
 {
@@ -63,11 +62,13 @@ public:
 	int read_events(){
 		return wl_display_read_events(display_);
 	}
-	struct wl_registry *get_registry(){
-		return (struct wl_registry *)marshal_constructor(WL_DISPLAY_GET_REGISTRY, 
-									&wl_registry_interface, 
-									NULL);
-	}
 
+	Callback *sync() {
+		return new Callback(marshal_constructor(WL_DISPLAY_SYNC, &wl_callback_interface, NULL));
+	}
+	Registry *get_registry() {
+		return new Registry(marshal_constructor(WL_DISPLAY_GET_REGISTRY, &wl_registry_interface, NULL));
+	}
 };
+
 #endif

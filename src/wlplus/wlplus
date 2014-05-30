@@ -5,18 +5,20 @@
 
 namespace wayland {
 
-#include "Proxy.h"
-#include "Display.h"
-#include "Registry.h"
-
-#include "Compositor.h"
-#include "Seat.h"
-#include "Shell.h"
-
-#include "Keyboard.h"
-#include "Pointer.h"
+#include "Callback.h"
+#include "Buffer.h"
+#include "Output.h"
+#include "Region.h"
 #include "Surface.h"
 #include "ShellSurface.h"
+#include "Shell.h"
+#include "Compositor.h"
+#include "Touch.h"
+#include "Pointer.h"
+#include "Keyboard.h"
+#include "Seat.h"
+#include "Registry.h"
+#include "Display.h"
 
 } // namespace wayland
 
