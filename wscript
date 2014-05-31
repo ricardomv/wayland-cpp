@@ -13,7 +13,8 @@ def configure(cnf):
 
 def build(bld):
 	bld(features='cxx cxxprogram', 
+		includes='src/wlplus',
 		source='src/main.cpp src/Window.cpp',
-		cxxflags=['-Wall','-g', '-std=c++11', '-I../src/wlplus'],
+		cxxflags=['-Wall','-g', '-std=c++11'],
 		use=['SH_LIBS'],
 		target='wl_term')
