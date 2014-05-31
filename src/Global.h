@@ -3,13 +3,20 @@
 class Global
 {
 public:
-	Compositor *compositor = NULL;
 	Registry *registry;
-	Shell *shell = NULL;
-	Seat *seat = NULL;
+	Compositor *compositor;
+	Shell *shell;
+	Seat *seat;
 
-	Global(Registry *registry_) : registry(registry_){
-		static const struct wl_registry_listener registry_all = { Global::HandleGlobal, Global::HandleGlobalRemove};
+	Global(Registry *registry_) : 
+		registry(registry_),
+		compositor(NULL),
+		shell(NULL),
+		seat(NULL) {
+		static const struct wl_registry_listener registry_all = {
+			Global::HandleGlobal, 
+			Global::HandleGlobalRemove
+		};
 		registry->add_listener((const struct wl_listener *)&registry_all, this);
 	}
 
