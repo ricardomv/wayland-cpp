@@ -3,8 +3,6 @@
 
 #include "Proxy.h"
 
-class Seat;
-
 class ShellSurface : public Proxy
 {
 public:
