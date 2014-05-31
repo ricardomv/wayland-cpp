@@ -8,6 +8,9 @@ class Subsurface : public Proxy
 public:
 	using Proxy::Proxy;
 
+	enum error {
+		WL_SUBSURFACE_ERROR_BAD_SURFACE = 0
+	};
 	void set_position(int32_t x, int32_t y) {
 		marshal(WL_SUBSURFACE_SET_POSITION, x, y);
 	}

@@ -100,13 +100,33 @@ def get_request_v2(interface, request):
 	function += "\t}\n"
 	return function
 
+def get_enum(enum):
+	snippet = "\tenum " + enum.get("name") + " {\n\t\t"
+	first = True
+	for entry in enum.findall('entry'):
+		if first:
+			first = False
+		else:
+			snippet += ", \n\t\t"
+		snippet += interface.get("name").upper() + "_"
+		snippet += enum.get("name").upper() + "_"
+		snippet += entry.get("name").upper() + " = " + entry.get("value")
+	snippet += "\n\t};\n"
+	return snippet
+
+
 for interface in root.findall('interface'):
 	name = get_object_name(interface.get('name'))
-	header = open('src/wlplus/'+name+".h", 'w+')
-	requests = "public:\n\tusing Proxy::Proxy;\n\n"
+
+	body = "public:\n\tusing Proxy::Proxy;\n\n"	
+
+	for enum in interface.findall('enum'):
+		body += get_enum(enum)
+
 	for request in interface.findall('request'):
-		requests += get_request_v2(interface, request)
-	body = requests
+		body += get_request_v2(interface, request)
+
+	header = open('src/wlplus/'+name+".h", 'w+')
 	header.write(
 				get_guards(name, 
 				get_class(name, 

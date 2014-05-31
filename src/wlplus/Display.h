@@ -63,6 +63,11 @@ public:
 		return wl_display_read_events(display_);
 	}
 
+	enum error {
+		WL_DISPLAY_ERROR_INVALID_OBJECT = 0, 
+		WL_DISPLAY_ERROR_INVALID_METHOD = 1, 
+		WL_DISPLAY_ERROR_NO_MEMORY = 2
+	};
 	Callback *sync() {
 		return new Callback(marshal_constructor(WL_DISPLAY_SYNC, &wl_callback_interface, NULL));
 	}

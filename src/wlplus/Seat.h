@@ -8,6 +8,11 @@ class Seat : public Proxy
 public:
 	using Proxy::Proxy;
 
+	enum capability {
+		WL_SEAT_CAPABILITY_POINTER = 1, 
+		WL_SEAT_CAPABILITY_KEYBOARD = 2, 
+		WL_SEAT_CAPABILITY_TOUCH = 4
+	};
 	Pointer *get_pointer() {
 		return new Pointer(marshal_constructor(WL_SEAT_GET_POINTER, &wl_pointer_interface, NULL));
 	}
