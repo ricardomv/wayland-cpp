@@ -1,7 +1,13 @@
 #! /bin/python
 
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("protocol", help="XML protocol description")
+parser.add_argument("libpath", help="header files output directory")
+args = parser.parse_args()
+
 import xml.etree.ElementTree as etree
-tree = etree.parse('protocol/wayland.xml')
+tree = etree.parse(args.protocol)
 root = tree.getroot()
 
 def get_object_name(interface):
@@ -90,7 +96,7 @@ def get_request_v2(interface, request):
 
 	if request.get("type") == "destructor":
 		return function
-	create = False
+	
 	arguments = format_request_args(request)
 	return_type = format_request_return(request)
 	body = format_request_body(request)
@@ -114,11 +120,13 @@ def get_enum(enum):
 	snippet += "\n\t};\n"
 	return snippet
 
-
 for interface in root.findall('interface'):
 	name = get_object_name(interface.get('name'))
 
-	body = "public:\n\tusing Proxy::Proxy;\n\n"	
+	if name == "Display":
+		continue
+
+	body = "public:\n\tusing Proxy::Proxy;\n\n"
 
 	for enum in interface.findall('enum'):
 		body += get_enum(enum)
@@ -126,7 +134,7 @@ for interface in root.findall('interface'):
 	for request in interface.findall('request'):
 		body += get_request_v2(interface, request)
 
-	header = open('src/wlplus/'+name+".h", 'w+')
+	header = open(args.libpath + "/" + name + ".h", 'w+')
 	header.write(
 				get_guards(name, 
 				get_class(name, 
