@@ -82,6 +82,8 @@ def format_request_body(request):
 									"&" + arg.get("interface") + "_interface, NULL"
 			else:
 				body = "return marshal_constructor(" + interface.get('name').upper() + "_" + request.get('name').upper() + ", interface, name, interface->name, version"
+		elif arg.get("type") == "object":
+			body += ", " + arg.get("name") + "->proxy_"
 		else:
 			body += ", " + arg.get("name")
 	if "return new" in body:

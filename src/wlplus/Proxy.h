@@ -3,9 +3,8 @@
 
 class Proxy
 {
-protected:
-	struct wl_proxy *proxy_ = NULL;
 public:
+	struct wl_proxy *proxy_ = NULL;
 	Proxy(struct wl_proxy *proxy) : proxy_(proxy) {}
 	Proxy() {}
 	~Proxy(){
