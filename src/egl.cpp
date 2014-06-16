@@ -1,8 +1,6 @@
 #include <wayland-egl.h>
-#include <EGL/egl.h>
-
 #include <cairo-gl.h>
-#include <cairomm/surface.h>
+#include <stdio.h>
 
 struct egl_ui {
 	EGLDisplay dpy;
@@ -50,11 +48,11 @@ void test_egl(struct wl_display *display, struct wl_surface *surface){
 	}
 
 	if (!eglChooseConfig(egl.dpy, argb_cfg_attribs,
-			     &egl.argb_config, 1, &n) || n != 1) {
+					&egl.argb_config, 1, &n) || n != 1) {
 		fprintf(stderr, "failed to choose argb EGL config\n");
 	}
 	egl.argb_ctx = eglCreateContext(egl.dpy, egl.argb_config,
-				       EGL_NO_CONTEXT, context_attribs);
+					EGL_NO_CONTEXT, context_attribs);
 	if (!egl.argb_ctx) {
 		fprintf(stderr, "failed to create EGL context\n");
 	}
@@ -82,4 +80,31 @@ void test_egl(struct wl_display *display, struct wl_surface *surface){
 							window.egl_surface,
 							window.width,
 							window.height);
+
+	cairo_t *cr;
+	cr = cairo_create(window.cairo_surface);
+
+	cairo_save(cr); // save the state of the context
+	cairo_set_source_rgb(cr, 0.86, 0.85, 0.47);
+	cairo_paint(cr); // fill image with the color
+	cairo_restore(cr); // color is back to black now
+
+	cairo_save(cr);
+	// draw a border around the image
+	cairo_set_line_width(cr, 20.0); // make the line wider
+	cairo_rectangle(cr, 0.0, 0.0, window.width, window.height);
+	cairo_stroke(cr);
+
+	cairo_set_source_rgba(cr, 0.0, 0.0, 0.0, 0.7);
+	// draw a circle in the center of the image
+	cairo_arc(cr, window.width / 2.0, window.height / 2.0, window.height / 4.0, 0.0, 2.0 * 3.142);
+	cairo_stroke(cr);
+
+	// draw a diagonal line
+	cairo_move_to(cr, window.width / 4.0, window.height / 4.0);
+	cairo_line_to(cr, window.width * 3.0 / 4.0, window.height * 3.0 / 4.0);
+	cairo_stroke(cr);
+	cairo_restore(cr);
+
+	cairo_gl_surface_swapbuffers(window.cairo_surface);
 }

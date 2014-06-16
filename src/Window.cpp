@@ -12,7 +12,7 @@ Window::Window(){
 	Surface *surface = global->compositor->create_surface();
 	ShellSurface *shellsurface = global->shell->get_shell_surface(surface);
 	shellsurface->set_toplevel();
-	shellsurface->set_fullscreen(WL_SHELL_SURFACE_FULLSCREEN_METHOD_DEFAULT,0,NULL);
+	//shellsurface->set_fullscreen(WL_SHELL_SURFACE_FULLSCREEN_METHOD_DEFAULT,0,NULL);
 
 	test_egl((struct wl_display *)display->proxy_, (struct wl_surface *)surface->proxy_);
 
