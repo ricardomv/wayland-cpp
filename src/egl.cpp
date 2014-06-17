@@ -11,7 +11,6 @@ struct egl_ui {
 
 struct window{
 	int width, height;
-	struct wayland_t *ui;
 
 	struct wl_egl_window *egl_window;
 	EGLSurface egl_surface;
@@ -106,5 +105,16 @@ void test_egl(struct wl_display *display, struct wl_surface *surface){
 	cairo_stroke(cr);
 	cairo_restore(cr);
 
+	cairo_destroy(cr);
+
 	cairo_gl_surface_swapbuffers(window.cairo_surface);
+
+	wl_egl_window_destroy(window.egl_window);
+	eglDestroySurface(window.dpy,window.egl_surface);
+	cairo_surface_destroy(window.cairo_surface);
+
+	cairo_device_destroy(egl.argb_device);
+	eglMakeCurrent(egl.dpy, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+	eglTerminate(egl.dpy);
+	eglReleaseThread();
 }

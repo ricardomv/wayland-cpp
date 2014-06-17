@@ -9,8 +9,8 @@ Window::Window(){
 	input = new Input();
 	input->add(global->seat->get_keyboard());
 	input->add(global->seat->get_pointer());
-	Surface *surface = global->compositor->create_surface();
-	ShellSurface *shellsurface = global->shell->get_shell_surface(surface);
+	surface = global->compositor->create_surface();
+	shellsurface = global->shell->get_shell_surface(surface);
 	shellsurface->set_toplevel();
 	//shellsurface->set_fullscreen(WL_SHELL_SURFACE_FULLSCREEN_METHOD_DEFAULT,0,NULL);
 
@@ -19,6 +19,8 @@ Window::Window(){
 }
 
 Window::~Window() {
+	delete shellsurface;
+	delete surface;
 	delete input;
 	delete global;
 	display->disconnect();

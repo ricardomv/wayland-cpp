@@ -17,7 +17,6 @@ def configure(cnf):
 	cnf.load('compiler_cxx')
 	cnf.check(features='cxx cxxprogram cxxshlib', cflags=['-Wall','-g', '-std=c++11'], defines=['var=foo'])
 	cnf.check_cfg(package='wayland-client', args='--cflags --libs', uselib_store='SH_LIBS', mandatory=True)
-	cnf.check_cfg(package='cairomm-1.0', args='--cflags --libs', uselib_store='SH_LIBS', mandatory=True)
 	cnf.check_cfg(package='egl', args='--cflags --libs', mandatory=False)
 	if cnf.env.LIB_EGL:
 		cnf.check_cfg(package='wayland-egl', args='--cflags --libs', uselib_store='EGL', mandatory=True)

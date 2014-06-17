@@ -11,7 +11,9 @@ public:
 	~Window();
 	void run();
 private:
-	Display *display = NULL;
-	Global *global = NULL;
-	Input *input = NULL;
+	Display *display;
+	Global *global;
+	Input *input;
+	Surface *surface;
+	ShellSurface *shellsurface;
 };
