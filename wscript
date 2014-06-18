@@ -29,7 +29,7 @@ def build(bld):
 
 	bld(features='cxx cxxprogram',
 		includes='src/wlplus',
-		source='src/main.cpp src/Window.cpp src/egl.cpp',
+		source='src/main.cpp src/Window.cpp src/Input.cpp src/egl.cpp',
 		cxxflags=['-Wall','-g', '-std=c++11'],
 		use=['SH_LIBS', 'EGL'],
 		target='app')
