@@ -22,10 +22,12 @@ def configure(cnf):
 		cnf.check_cfg(package='wayland-egl', args='--cflags --libs', uselib_store='EGL', mandatory=True)
 		cnf.check_cfg(package='cairo-gl', args='--cflags --libs', uselib_store='EGL', mandatory=True)
 
+	cnf.env.append_value('LINKFLAGS', '-lmutter-wayland')
+
 	cnf.write_config_header('src/config.h')
 
 def build(bld):
-	bld(source='protocol/wayland.xml')
+	bld(source='protocol/wayland.xml protocol/xdg-shell.xml')
 
 	bld(features='cxx cxxprogram',
 		includes='src/wlplus',

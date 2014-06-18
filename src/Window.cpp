@@ -10,8 +10,10 @@ Window::Window(){
 	input->add(global->seat->get_keyboard());
 	input->add(global->seat->get_pointer());
 	surface = global->compositor->create_surface();
-	shellsurface = global->shell->get_shell_surface(surface);
-	shellsurface->set_toplevel();
+	XdgSurface *xdgSurface = global->xdgShell->get_xdg_surface(surface);
+	xdgSurface->set_title("Greatest");
+	//shellsurface = global->shell->get_shell_surface(surface);
+	//shellsurface->set_toplevel();
 	//shellsurface->set_fullscreen(WL_SHELL_SURFACE_FULLSCREEN_METHOD_DEFAULT,0,NULL);
 
 	test_egl((struct wl_display *)display->proxy_, (struct wl_surface *)surface->proxy_);

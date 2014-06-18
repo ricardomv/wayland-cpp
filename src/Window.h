@@ -1,6 +1,11 @@
 #include "wlplus"
 using namespace wayland;
 
+#include "xdg-shell-client-protocol.h"
+#include "XdgPopup.h"
+#include "XdgSurface.h"
+#include "XdgShell.h"
+
 #include "Global.h"
 #include "Input.h"
 

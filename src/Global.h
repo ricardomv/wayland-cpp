@@ -7,6 +7,7 @@ public:
 	Compositor *compositor;
 	Shell *shell;
 	Seat *seat;
+	XdgShell *xdgShell;
 
 	Global(Registry *registry_) : 
 		registry(registry_),
@@ -39,6 +40,9 @@ public:
 			global->seat = new Seat(global->registry->bind(name, &wl_seat_interface, version));
 		} else if (strcmp(interface, "wl_shm") == 0) {
 		} else if (strcmp(interface, "wl_text_input_manager") == 0) {
+		} else if (strcmp(interface, "xdg_shell") == 0) {
+			global->xdgShell = new XdgShell(global->registry->bind(name, &xdg_shell_interface, version));
+			global->xdgShell->use_unstable_version(XDG_SHELL_VERSION_CURRENT);
 		} else if (strcmp(interface, "wl_shell") == 0){
 			global->shell = new Shell(global->registry->bind(name, &wl_shell_interface, version));
 		}

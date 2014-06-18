@@ -19,3 +19,6 @@ Subcompositor.h
 Subsurface.h
 Surface.h
 Touch.h
+XdgPopup.h
+XdgShell.h
+XdgSurface.h
