@@ -1,39 +1,50 @@
-#include <iostream>
 #include <string.h>
 
-#include <wlplus>
-
-using namespace wayland;
-using namespace std;
-
-class Global : public Registry
+class Global
 {
 public:
-	using Registry::Registry;
+	Registry *registry;
+	Compositor *compositor;
+	Shell *shell;
+	Seat *seat;
 
-	Compositor *compositor = NULL;
-	Shell *shell = NULL;
-	Seat *seat = NULL;
+	Global(Registry *registry_) : 
+		registry(registry_),
+		compositor(NULL),
+		shell(NULL),
+		seat(NULL) {
+		static const struct wl_registry_listener registry_all = {
+			Global::HandleGlobal, 
+			Global::HandleGlobalRemove
+		};
+		registry->add_listener((const struct wl_listener *)&registry_all, this);
+	}
+
 	~Global(){
 		delete shell;
 		delete compositor;
 		delete seat;
+		delete registry;
 	}
-	void HandleGlobal(
+	static void HandleGlobal(void *data,
+				struct wl_registry *reg,
 				uint32_t name,
 				const char *interface,
-				uint32_t version) override {
+				uint32_t version) {
+		Global *global = static_cast<Global *>(data);
 		if (strcmp(interface, "wl_compositor") == 0) {
-			compositor = new Compositor(bind(name, &wl_compositor_interface, version));
+			global->compositor = new Compositor(global->registry->bind(name, &wl_compositor_interface, version));
 		} else if (strcmp(interface, "wl_output") == 0) {
 		} else if (strcmp(interface, "wl_seat") == 0) {
-			seat = new Seat(bind(name, &wl_seat_interface, version));
+			global->seat = new Seat(global->registry->bind(name, &wl_seat_interface, version));
 		} else if (strcmp(interface, "wl_shm") == 0) {
 		} else if (strcmp(interface, "wl_text_input_manager") == 0) {
 		} else if (strcmp(interface, "wl_shell") == 0){
-			shell = new Shell(bind(name, &wl_shell_interface, version));
+			global->shell = new Shell(global->registry->bind(name, &wl_shell_interface, version));
 		}
 	}
-	void HandleGlobalRemove(uint32_t name) override {
+	static void HandleGlobalRemove(void *data,
+				struct wl_registry *reg, 
+				uint32_t name) {
 	}
 };

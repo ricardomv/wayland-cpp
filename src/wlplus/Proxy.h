@@ -4,14 +4,13 @@
 class Proxy
 {
 public:
+	struct wl_proxy *proxy_ = NULL;
 	Proxy(struct wl_proxy *proxy) : proxy_(proxy) {}
 	Proxy() {}
 	~Proxy(){
 		if (proxy_)
 			destroy();
 	}
-protected:
-	struct wl_proxy *proxy_ = NULL;
 
 	struct wl_proxy *create(struct wl_proxy *factory,
 					const struct wl_interface *interface){
