@@ -1,5 +1,7 @@
 #include "Window.h"
 
+void test_egl(int width, int height, struct wl_display *display, struct wl_surface *surface);
+
 Window::Window()
 		: width(300)
 		, height(300){
@@ -18,6 +20,9 @@ Window::Window()
 	shellsurface->add_listener((const struct wl_listener *)&shell_surface_listener, this);
 	shellsurface->set_toplevel();
 	//shellsurface->set_fullscreen(WL_SHELL_SURFACE_FULLSCREEN_METHOD_DEFAULT,0,NULL);
+	//display->dispatch();
+	test_egl(width, height, (struct wl_display *)display->proxy_, (struct wl_surface *)surface->proxy_);
+
 }
 
 Window::~Window() {
