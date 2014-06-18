@@ -6,6 +6,7 @@ class Input
 	Keyboard *keyboard = NULL;
 	Pointer *pointer = NULL;
 public:
+	int running = 1;
 	~Input() {
 		delete keyboard;
 		delete pointer;
@@ -34,24 +35,70 @@ public:
 		pointer->add_listener((const struct wl_listener *)&ptr_listeners, this);
 	}
 
-	static void KbrdHandleKeymap(void *data, struct wl_keyboard *kbd, uint32_t format, int fd, uint32_t size) {
-		cout << "KbrdHandleKeymap" << endl;
-	}
-	static void KbrdHandleEnter(void *data, struct wl_keyboard *kbd, uint32_t serial, struct wl_surface *surface,
-						struct wl_array *keys) {}
-	static void KbrdHandleLeave(void *data, struct wl_keyboard *kbd, uint32_t serial, struct wl_surface *surface) {}
-	static void KbrdHandleKey(void *data, struct wl_keyboard *kbd, uint32_t serial, uint32_t time, uint32_t key,
-						uint32_t state_w) {}
-	static void KbrdHandleModifiers(void *data, struct wl_keyboard *kbd, uint32_t serial, uint32_t mods_depressed,
-						uint32_t mods_latched, uint32_t mods_locked,
-						uint32_t group) {}
+	static void KbrdHandleKeymap(void *data,
+					struct wl_keyboard *kbd,
+					uint32_t format,
+					int fd,
+					uint32_t size) {}
 
-	static void PtrHandleEnter(void *data, struct wl_pointer *ptr, uint32_t serial, struct wl_surface *surface,
-					wl_fixed_t sx_w, wl_fixed_t sy_w) {
-		cout << "Ptr" << endl;
+	static void KbrdHandleEnter(void *data,
+					struct wl_keyboard *kbd,
+					uint32_t serial,
+					struct wl_surface *surface,
+					struct wl_array *keys) {}
+
+	static void KbrdHandleLeave(void *data,
+					struct wl_keyboard *kbd,
+					uint32_t serial,
+					struct wl_surface *surface) {}
+
+	static void KbrdHandleKey(void *data,
+					struct wl_keyboard *kbd,
+					uint32_t serial,
+					uint32_t time,
+					uint32_t key,
+					uint32_t state_w) {
+		Input *input = static_cast<Input*>(data);
+		input->running = 0;
 	}
-	static void PtrHandleLeave(void *data, struct wl_pointer *ptr, uint32_t serial, struct wl_surface *surface) {}
-	static void PtrHandleMotion(void *data, struct wl_pointer *ptr, uint32_t time, wl_fixed_t sx_w, wl_fixed_t sy_w) {}
-	static void PtrHandleButton(void *data, struct wl_pointer *ptr, uint32_t serial, uint32_t time, uint32_t button, uint32_t state_w) {}
-	static void PtrHandleAxis(void *data, struct wl_pointer *ptr, uint32_t time, uint32_t axis, wl_fixed_t value) {}
+
+	static void KbrdHandleModifiers(void *data,
+					struct wl_keyboard *kbd,
+					uint32_t serial,
+					uint32_t mods_depressed,
+					uint32_t mods_latched,
+					uint32_t mods_locked,
+					uint32_t group) {}
+
+
+	static void PtrHandleEnter(void *data,
+					struct wl_pointer *ptr,
+					uint32_t serial,
+					struct wl_surface *surface,
+					wl_fixed_t sx_w,
+					wl_fixed_t sy_w) {}
+
+	static void PtrHandleLeave(void *data,
+					struct wl_pointer *ptr,
+					uint32_t serial,
+					struct wl_surface *surface) {}
+
+	static void PtrHandleMotion(void *data,
+					struct wl_pointer *ptr,
+					uint32_t time,
+					wl_fixed_t sx_w,
+					wl_fixed_t sy_w) {}
+
+	static void PtrHandleButton(void *data,
+					struct wl_pointer *ptr,
+					uint32_t serial,
+					uint32_t time,
+					uint32_t button,
+					uint32_t state_w) {}
+
+	static void PtrHandleAxis(void *data,
+					struct wl_pointer *ptr,
+					uint32_t time,
+					uint32_t axis,
+					wl_fixed_t value) {}
 };
