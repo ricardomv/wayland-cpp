@@ -86,7 +86,8 @@ public:
 					uint32_t key,
 					uint32_t state_w) {
 		Input *input = static_cast<Input*>(data);
-		input->running = 0;
+		if (key == 1)
+			input->running = 0;
 	}
 
 	static void KbrdHandleModifiers(void *data,

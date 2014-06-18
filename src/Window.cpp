@@ -13,7 +13,8 @@ Window::Window()
 	shellsurface = global->shell->get_shell_surface(surface);
 	static const struct wl_shell_surface_listener shell_surface_listener = {
 		Window::HandlePing,
-		Window::HandleConfigure
+		Window::HandleConfigure,
+		Window::HandlePopupDone
 	};
 	shellsurface->add_listener((const struct wl_listener *)&shell_surface_listener, this);
 	shellsurface->set_toplevel();
