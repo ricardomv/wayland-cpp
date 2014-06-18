@@ -8,9 +8,7 @@ Window::Window()
 	display = Display::connect(NULL);
 	global = new Global(display->get_registry());
 	display->roundtrip();
-	input = new Input();
-	input->add(global->seat->get_keyboard());
-	input->add(global->seat->get_pointer());
+	input = new Input(global->seat);
 	surface = global->compositor->create_surface();
 	shellsurface = global->shell->get_shell_surface(surface);
 	static const struct wl_shell_surface_listener shell_surface_listener = {

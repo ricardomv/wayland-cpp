@@ -3,10 +3,19 @@ using namespace std;
 
 class Input
 {
+	Seat *seat = NULL;
 	Keyboard *keyboard = NULL;
 	Pointer *pointer = NULL;
 public:
+	string name;
 	int running = 1;
+	Input(Seat *seat_) : seat(seat_) {
+		static const struct wl_seat_listener seat_listener = {
+			Input::HandleCapabilities,
+			Input::HandleName
+		};
+		seat->add_listener((const struct wl_listener *)&seat_listener, this);
+	}
 	~Input() {
 		delete keyboard;
 		delete pointer;
@@ -33,6 +42,24 @@ public:
 			Input::PtrHandleAxis
 		};
 		pointer->add_listener((const struct wl_listener *)&ptr_listeners, this);
+	}
+
+	static void HandleCapabilities(void *data, struct wl_seat *seat, uint32_t capabilities){
+		Input *input = static_cast<Input*>(data);
+
+		if (capabilities & WL_SEAT_CAPABILITY_POINTER)
+			input->add(input->seat->get_pointer());
+
+		if (capabilities & WL_SEAT_CAPABILITY_KEYBOARD)
+			input->add(input->seat->get_keyboard());
+
+		if (capabilities & WL_SEAT_CAPABILITY_TOUCH)
+			cout << "Touch not implemented" << endl;
+	}
+
+	static void HandleName(void *data, struct wl_seat *seat, const char *name){
+		Input *input = static_cast<Input*>(data);
+		input->name = name;
 	}
 
 	static void KbrdHandleKeymap(void *data,
