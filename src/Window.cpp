@@ -29,7 +29,6 @@ Window::~Window() {
 	delete surface;
 	delete input;
 	delete global;
-	display->disconnect();
 	delete display;
 }
 

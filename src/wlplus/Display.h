@@ -10,6 +10,9 @@ public:
 	Display(struct wl_display *display) 
 					: Proxy((struct wl_proxy *)display)
 					, cobj(display) {}
+	~Display() {
+		disconnect();
+	}
 
 	static Display *connect(const char *name){
 		return new Display(wl_display_connect(name));
