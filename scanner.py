@@ -85,7 +85,7 @@ def format_request_body(request):
 		else:
 			body += ", " + arg.get("name")
 			if arg.get("type") == "object":
-				body += "? " + arg.get("name") + "->proxy_" + ": NULL"
+				body += "? " + arg.get("name") + "->cobj" + ": NULL"
 	if "return new" in body:
 		body += ")"
 	body += ");"
@@ -128,7 +128,11 @@ for interface in root.findall('interface'):
 	if name == "Display":
 		continue
 
-	body = "public:\n\tusing Proxy::Proxy;\n\n"
+	body = "public:\n\t" + "struct " + interface.get('name') + " *cobj;"
+	body += "\n\t" + name + "() {}"
+	body += "\n\t" + name + "(struct wl_proxy *proxy)"
+	body += "\n\t\t\t" + ": Proxy(proxy)"
+	body += "\n\t\t\t" + ", cobj((struct " + interface.get('name') + " *)proxy) {}" + "\n\n"
 
 	for enum in interface.findall('enum'):
 		body += get_enum(enum)

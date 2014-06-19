@@ -5,12 +5,11 @@
 
 class Display : public Proxy
 {
-private:
-	struct wl_display *display_;
 public:
+	struct wl_display *cobj;
 	Display(struct wl_display *display) 
-					: Proxy((struct wl_proxy *)display), 
-					display_(display) {}
+					: Proxy((struct wl_proxy *)display)
+					, cobj(display) {}
 
 	static Display *connect(const char *name){
 		return new Display(wl_display_connect(name));
@@ -19,48 +18,48 @@ public:
 		return new Display(wl_display_connect_to_fd(fd));
 	}
 	void disconnect(){
-		wl_display_disconnect(display_);
-		display_ = NULL;
+		wl_display_disconnect(cobj);
+		cobj = NULL;
 		proxy_ = NULL;
 	}
 	int get_fd(){
-		return wl_display_get_fd(display_);
+		return wl_display_get_fd(cobj);
 	}
 	int dispatch(){
-		return wl_display_dispatch(display_);
+		return wl_display_dispatch(cobj);
 	}
 	int dispatch_queue(struct wl_event_queue *queue){
-		return wl_display_dispatch_queue(display_, queue);
+		return wl_display_dispatch_queue(cobj, queue);
 	}
 	int dispatch_queue_pending(struct wl_event_queue *queue){
-		return wl_display_dispatch_queue_pending(display_, queue);
+		return wl_display_dispatch_queue_pending(cobj, queue);
 	}
 	int dispatch_pending(){
-		return wl_display_dispatch_pending(display_);
+		return wl_display_dispatch_pending(cobj);
 	}
 	int get_error(){
-		return wl_display_get_error(display_);
+		return wl_display_get_error(cobj);
 	}
 	int flush(){
-		return wl_display_flush(display_);
+		return wl_display_flush(cobj);
 	}
 	int roundtrip(){
-		return wl_display_roundtrip(display_);
+		return wl_display_roundtrip(cobj);
 	}
 	struct wl_event_queue *create_queue(){
-		return wl_display_create_queue(display_);
+		return wl_display_create_queue(cobj);
 	}
 	int prepare_read_queue(struct wl_event_queue *queue){
-		return wl_display_prepare_read_queue(display_, queue);
+		return wl_display_prepare_read_queue(cobj, queue);
 	}
 	int prepare_read(){
-		return wl_display_prepare_read(display_);
+		return wl_display_prepare_read(cobj);
 	}
 	void cancel_read(){
-		wl_display_cancel_read(display_);
+		wl_display_cancel_read(cobj);
 	}
 	int read_events(){
-		return wl_display_read_events(display_);
+		return wl_display_read_events(cobj);
 	}
 
 	enum error {

@@ -17,11 +17,11 @@ Window::Window()
 		Window::HandlePopupDone
 	};
 	shellsurface->add_listener((const struct wl_listener *)&shell_surface_listener, this);
+	shellsurface->set_title("cairo-wayland-cpp");
 	shellsurface->set_toplevel();
 	//shellsurface->set_fullscreen(WL_SHELL_SURFACE_FULLSCREEN_METHOD_DEFAULT,0,NULL);
-	//display->dispatch();
-	test_egl(width, height, (struct wl_display *)display->proxy_, (struct wl_surface *)surface->proxy_);
-
+	//display->dispatch(); /* update window size after fullscreen */
+	test_egl(width, height, display->cobj, surface->cobj);
 }
 
 Window::~Window() {
