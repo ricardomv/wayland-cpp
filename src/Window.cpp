@@ -1,6 +1,9 @@
+#include "config.h"
 #include "Window.h"
 
+#if TEST_EGL
 void test_egl(int width, int height, struct wl_display *display, struct wl_surface *surface);
+#endif
 
 Window::Window()
 		: width(300)
@@ -21,7 +24,11 @@ Window::Window()
 	shellsurface->set_toplevel();
 	//shellsurface->set_fullscreen(WL_SHELL_SURFACE_FULLSCREEN_METHOD_DEFAULT,0,NULL);
 	//display->dispatch(); /* update window size after fullscreen */
+#if TEST_EGL
 	test_egl(width, height, display->cobj, surface->cobj);
+#else
+	display->roundtrip(); /* wait for all input and surface initializations */
+#endif
 }
 
 Window::~Window() {
@@ -55,7 +62,7 @@ void Window::HandlePopupDone(void *data,
 }
 
 void Window::run(){
-	while(input->running) {
+	while(TEST_EGL && input->running) {
 		display->dispatch();
 	}
 }
