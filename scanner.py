@@ -132,7 +132,11 @@ for interface in root.findall('interface'):
 	body += "\n\t" + name + "() {}"
 	body += "\n\t" + name + "(struct wl_proxy *proxy)"
 	body += "\n\t\t\t" + ": Proxy(proxy)"
-	body += "\n\t\t\t" + ", cobj((struct " + interface.get('name') + " *)proxy) {}" + "\n\n"
+	body += "\n\t\t\t" + ", cobj((struct " + interface.get('name') + " *)proxy) {}"
+
+	body += "\n\t" + name + "(struct " + interface.get('name') + " *cobj_)"
+	body += "\n\t\t\t" + ": Proxy((struct wl_proxy *)cobj_)"
+	body += "\n\t\t\t" + ", cobj(cobj_) {}" + "\n\n"
 
 	for enum in interface.findall('enum'):
 		body += get_enum(enum)

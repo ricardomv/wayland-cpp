@@ -36,14 +36,15 @@ void Input::add(Pointer *ptr) {
 }
 
 //static
-void Input::HandleCapabilities(void *data, struct wl_seat *seat, uint32_t capabilities){
+void Input::HandleCapabilities(void *data, struct wl_seat *wl_seat, uint32_t capabilities){
 	Input *input = static_cast<Input*>(data);
+	Seat seat(wl_seat);
 
 	if (capabilities & WL_SEAT_CAPABILITY_POINTER)
-		input->add(input->seat->get_pointer());
+		input->add(seat.get_pointer());
 
 	if (capabilities & WL_SEAT_CAPABILITY_KEYBOARD)
-		input->add(input->seat->get_keyboard());
+		input->add(seat.get_keyboard());
 
 	if (capabilities & WL_SEAT_CAPABILITY_TOUCH)
 		cout << "Touch not implemented" << endl;
