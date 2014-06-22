@@ -7,20 +7,13 @@ class Display : public Proxy
 {
 public:
 	struct wl_display *cobj;
-	Display(struct wl_display *display) 
-					: Proxy((struct wl_proxy *)display)
-					, cobj(display) {}
+	Display(const char *name = NULL)
+					: Proxy((struct wl_proxy *)wl_display_connect(name))
+					, cobj((struct wl_display *)proxy_) {}
+	Display(int fd)
+					: Proxy((struct wl_proxy *)wl_display_connect_to_fd(fd))
+					, cobj((struct wl_display *)proxy_) {}
 	~Display() {
-		disconnect();
-	}
-
-	static Display *connect(const char *name){
-		return new Display(wl_display_connect(name));
-	}
-	static Display *connect_to_fd(int fd){
-		return new Display(wl_display_connect_to_fd(fd));
-	}
-	void disconnect(){
 		wl_display_disconnect(cobj);
 		cobj = NULL;
 		proxy_ = NULL;

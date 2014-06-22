@@ -8,7 +8,7 @@ void test_egl(int width, int height, struct wl_display *display, struct wl_surfa
 Window::Window()
 		: width(300)
 		, height(300){
-	display = Display::connect(NULL);
+	display = new Display;
 	global = new Global(display->get_registry());
 	display->roundtrip();
 	input = new Input(global->seat);
