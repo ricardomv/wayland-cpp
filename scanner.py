@@ -82,6 +82,8 @@ def format_request_body(request):
 									"&" + arg.get("interface") + "_interface, NULL"
 			else:
 				body = "return marshal_constructor(" + interface.get('name').upper() + "_" + request.get('name').upper() + ", interface, name, interface->name, version"
+		elif (request.get("type") == "destructor"):
+			body = "marshal_constructor(" + interface.get('name').upper() + "_" + request.get('name').upper()
 		else:
 			body += ", " + arg.get("name")
 			if arg.get("type") == "object":
@@ -96,14 +98,14 @@ def get_request_v2(interface, request):
 	function = ""
 	arguments = ""
 
-	if request.get("type") == "destructor":
-		return function
-	
 	arguments = format_request_args(request)
 	return_type = format_request_return(request)
 	body = format_request_body(request)
 
-	function = "\t" + return_type + name + "(" + arguments + ") {\n"
+	if (request.get("type") == "destructor"):
+		function = "\t~" + get_object_name(interface.get('name')) + "() {\n"
+	else:
+		function = "\t" + return_type + name + "(" + arguments + ") {\n"
 	function += "\t\t" + body + "\n"
 	function += "\t}\n"
 	return function
@@ -129,7 +131,6 @@ for interface in root.findall('interface'):
 		continue
 
 	body = "public:\n\t" + "struct " + interface.get('name') + " *cobj;"
-	body += "\n\t" + name + "() {}"
 	body += "\n\t" + name + "(struct wl_proxy *proxy)"
 	body += "\n\t\t\t" + ": Proxy(proxy)"
 	body += "\n\t\t\t" + ", cobj((struct " + interface.get('name') + " *)proxy) {}"

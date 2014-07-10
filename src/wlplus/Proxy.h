@@ -7,7 +7,6 @@ protected:
 	struct wl_proxy *proxy_ = NULL;
 public:
 	Proxy(struct wl_proxy *proxy) : proxy_(proxy) {}
-	Proxy() {}
 	~Proxy(){
 		if (proxy_)
 			destroy();
