@@ -1,9 +1,9 @@
 #include "config.h"
 #include "Window.h"
-
-#if TEST_EGL
-void test_egl(int width, int height, struct wl_display *display, struct wl_surface *surface);
-#endif
+#include "Global.h"
+#include "Input.h"
+#include "Egl.h"
+#include <GL/gl.h>
 
 Window::Window()
 		: width(300)
@@ -22,16 +22,13 @@ Window::Window()
 	shellsurface->add_listener((const struct wl_listener *)&shell_surface_listener, this);
 	shellsurface->set_title("cairo-wayland-cpp");
 	shellsurface->set_toplevel();
-	//shellsurface->set_fullscreen(WL_SHELL_SURFACE_FULLSCREEN_METHOD_DEFAULT,0,NULL);
-	//display->dispatch(); /* update window size after fullscreen */
-#if TEST_EGL
-	test_egl(width, height, display->cobj, surface->cobj);
-#else
-	display->roundtrip(); /* wait for all input and surface initializations */
-#endif
+	egl = new Egl(display->cobj);
+	eglwindow = egl->CreateWindow(surface->cobj,width,height);
 }
 
 Window::~Window() {
+	delete eglwindow;
+	delete egl;
 	delete shellsurface;
 	delete surface;
 	delete input;
@@ -54,6 +51,8 @@ void Window::HandleConfigure(void *data,
 	Window *window = static_cast<Window *>(data);
 	window->width = width;
 	window->height = height;
+	if (window->eglwindow)
+		window->eglwindow->Resize(width, height);
 }
 
 void Window::HandlePopupDone(void *data,
@@ -62,7 +61,19 @@ void Window::HandlePopupDone(void *data,
 }
 
 void Window::run(){
-	while(TEST_EGL && input->running) {
+	while(input->running) {
 		display->dispatch();
+		glViewport(0,0,width,height);
+		glClearColor(0.0f, 0.8f, 0.0f, 0.5f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glBegin(GL_TRIANGLES);
+	        glColor3f(1.f, 0.f, 0.f);
+	        glVertex3f(-0.6f, -0.4f, 0.f);
+	        glColor3f(0.f, 1.f, 0.f);
+	        glVertex3f(0.6f, -0.4f, 0.f);
+	        glColor3f(0.f, 0.f, 1.f);
+	        glVertex3f(0.f, 0.6f, 0.f);
+	    glEnd();
+		eglwindow->SwapBuffers();
 	}
 }
