@@ -3,8 +3,11 @@
 using namespace wayland;
 using namespace std;
 
+class Window;
+
 class Input
 {
+	Window *window;
 	Seat *seat = NULL;
 	Keyboard *keyboard = NULL;
 	Pointer *pointer = NULL;
@@ -12,7 +15,7 @@ public:
 	string name;
 	int running = 1;
 
-	Input(Seat *seat_);
+	Input(Window *window_, Seat *seat_);
 	~Input();
 
 	void add(Keyboard *kbrd);

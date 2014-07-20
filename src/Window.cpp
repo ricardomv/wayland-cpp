@@ -5,13 +5,13 @@
 #include "Egl.h"
 #include <GL/gl.h>
 
-Window::Window()
-		: width(300)
-		, height(300){
+Window::Window(int width, int height)
+		: Rectangle(0, 0, width, height)
+		, fullscreen(false) {
 	display = new Display;
 	global = new Global(display->get_registry());
 	display->roundtrip();
-	input = new Input(global->seat);
+	input = new Input(this, global->seat);
 	surface = global->compositor->create_surface();
 	shellsurface = global->shell->get_shell_surface(surface);
 	static const struct wl_shell_surface_listener shell_surface_listener = {
@@ -23,7 +23,7 @@ Window::Window()
 	shellsurface->set_title("cairo-wayland-cpp");
 	shellsurface->set_toplevel();
 	egl = new Egl(display->cobj);
-	eglwindow = egl->CreateWindow(surface->cobj,width,height);
+	eglwindow = egl->CreateWindow(surface->cobj, width, height);
 }
 
 Window::~Window() {
@@ -49,10 +49,7 @@ void Window::HandleConfigure(void *data,
 					int32_t width,
 					int32_t height){
 	Window *window = static_cast<Window *>(data);
-	window->width = width;
-	window->height = height;
-	if (window->eglwindow)
-		window->eglwindow->Resize(width, height);
+	window->Resize(width, height);
 }
 
 void Window::HandlePopupDone(void *data,
@@ -60,10 +57,29 @@ void Window::HandlePopupDone(void *data,
 	//Window *window = static_cast<Window *>(data);
 }
 
+void Window::Fullscreen(bool value){
+	if(fullscreen == value)
+		return;
+	fullscreen = value;
+	if (value){
+		shellsurface->set_fullscreen(WL_SHELL_SURFACE_FULLSCREEN_METHOD_DEFAULT,0,NULL);
+		display->dispatch(); /* get configure event and update window size */
+	} else {
+		shellsurface->set_toplevel();
+		Resize(oldwidth, oldheight);
+	}
+}
+
+void Window::Resize(int w, int h){
+	if(SetSize(w, h)){
+		eglwindow->Resize(w, h);
+		glViewport(0, 0, w, h);
+	}
+}
+
 void Window::run(){
 	while(input->running) {
 		display->dispatch();
-		glViewport(0,0,width,height);
 		glClearColor(0.0f, 0.8f, 0.0f, 0.5f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		glBegin(GL_TRIANGLES);

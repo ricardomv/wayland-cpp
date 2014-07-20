@@ -1,6 +1,9 @@
 #include "Input.h"
+#include "Window.h"
 
-Input::Input(Seat *seat_) : seat(seat_) {
+Input::Input(Window *window_, Seat *seat_)
+				: window(window_)
+				, seat(seat_) {
 	static const struct wl_seat_listener seat_listener = {
 		Input::HandleCapabilities,
 		Input::HandleName
@@ -83,8 +86,14 @@ void Input::KbrdHandleKey(void *data,
 				uint32_t key,
 				uint32_t state_w) {
 	Input *input = static_cast<Input*>(data);
-	if (key == 1)
-		input->running = 0;
+	if (state_w == WL_KEYBOARD_KEY_STATE_PRESSED){
+		if (key == 1) /* Esc */
+			input->running = 0;
+		if (key == 33) /* F */
+			input->window->Fullscreen(true);
+		if (key == 34) /* G */
+			input->window->Fullscreen(false);
+	}
 }
 
 //static
