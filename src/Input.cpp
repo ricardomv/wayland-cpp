@@ -125,7 +125,11 @@ void Input::PtrHandleMotion(void *data,
 				struct wl_pointer *ptr,
 				uint32_t time,
 				wl_fixed_t sx_w,
-				wl_fixed_t sy_w) {}
+				wl_fixed_t sy_w) {
+	Input *input = static_cast<Input*>(data);
+	input->pointer_x = wl_fixed_to_double(sx_w);
+	input->pointer_y = wl_fixed_to_double(sy_w);
+}
 
 //static
 void Input::PtrHandleButton(void *data,

@@ -14,6 +14,8 @@ class Input
 public:
 	string name;
 	int running = 1;
+	float pointer_x;
+	float pointer_y;
 
 	Input(Window *window_, Seat *seat_);
 	~Input();
