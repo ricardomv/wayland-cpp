@@ -1,5 +1,6 @@
 #include "wlplus"
 #include "Rectangle.h"
+#include <FTGL/ftgl.h>
 
 using namespace wayland;
 
@@ -24,6 +25,7 @@ private:
 	ShellSurface *shellsurface;
 	Egl *egl;
 	EglWindow *eglwindow;
+	FTGLPixmapFont *font;
 	bool fullscreen;
 	static void HandlePing(void *data, struct wl_shell_surface *shell_surface, uint32_t serial);
 	static void HandleConfigure(void *data, struct wl_shell_surface *shell_surface, uint32_t edges, int32_t width, int32_t height);

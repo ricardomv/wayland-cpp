@@ -23,6 +23,7 @@ def configure(cnf):
 	cnf.check_cfg(package='egl', args='--cflags --libs', mandatory=True)
 	cnf.check_cfg(package='wayland-egl', args='--cflags --libs', uselib_store='EGL', mandatory=True)
 	cnf.check_cfg(package='gl', args='--cflags --libs', uselib_store='EGL', mandatory=True)
+	cnf.check_cfg(package='ftgl', args='--cflags --libs', uselib_store='EGL', mandatory=True)
 
 	cnf.write_config_header('config.h')
 

@@ -1,6 +1,6 @@
 #include "Egl.h"
 #include <GL/gl.h>
-#include <stdio.h>
+#include <sys/time.h>
 
 Egl::Egl(struct wl_display *wl_dpy) {
 	EGLint major, minor, n;
@@ -52,7 +52,9 @@ EglWindow *Egl::CreateWindow(struct wl_surface* surface, int width, int height){
 
 EglWindow::EglWindow(Egl *egl_, struct wl_egl_window *window)
 					: egl(egl_)
-					, egl_window(window) {
+					, egl_window(window)
+					, frames(0)
+					, benchmark_time(0) {
 	egl_surface = eglCreateWindowSurface(egl->display,
 							egl->argb_config,
 							window,
@@ -72,5 +74,21 @@ void EglWindow::Resize(int width, int height){
 }
 
 void EglWindow::SwapBuffers(){
+	struct timeval tv;
+	uint32_t mstime;
+
+	gettimeofday(&tv, NULL);
+	mstime = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+	frames++;
+
+	if((mstime - benchmark_time) > 200) /* update fps every 200 ms */
+	{
+		//  calculate the number of frames per second
+		fps = frames / ((mstime - benchmark_time) / 1000.0f);
+		//  Set time
+		benchmark_time = mstime;
+		//  Reset frame count
+		frames = 0;
+	}
 	eglSwapBuffers(egl->display, egl_surface);
 }

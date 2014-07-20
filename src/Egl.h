@@ -19,7 +19,10 @@ class EglWindow
 	Egl *egl;
 	EGLSurface egl_surface;
 	struct wl_egl_window *egl_window;
+	uint32_t frames;
+	uint32_t benchmark_time;
 public:
+	float fps;
 	EglWindow(Egl *egl, struct wl_egl_window *window);
 	~EglWindow();
 	void Resize(int width, int height);

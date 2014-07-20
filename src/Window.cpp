@@ -24,6 +24,14 @@ Window::Window(int width, int height)
 	shellsurface->set_toplevel();
 	egl = new Egl(display->cobj);
 	eglwindow = egl->CreateWindow(surface->cobj, width, height);
+
+	// Create a pixmap font from a TrueType file.
+	font = new FTGLPixmapFont("/usr/share/fonts/TTF/DejaVuSans.ttf");
+	// If something went wrong, bail out.
+	if(font->Error())
+		throw "Could no load font";
+	// Set the font size and render a small text.
+	font->FaceSize(14);
 }
 
 Window::~Window() {
@@ -78,10 +86,16 @@ void Window::Resize(int w, int h){
 }
 
 void Window::run(){
+	int width, height;
+	char str[10];
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
 	while(input->running) {
 		display->dispatch();
-		glClearColor(0.0f, 0.8f, 0.0f, 0.5f);
+		GetSize(&width, &height); /* after configure event */
+
 		glClear(GL_COLOR_BUFFER_BIT);
+		sprintf(str,"%.1f fps", eglwindow->fps);
+		font->Render(str);
 		glBegin(GL_TRIANGLES);
 	        glColor3f(1.f, 0.f, 0.f);
 	        glVertex3f(-0.6f, -0.4f, 0.f);

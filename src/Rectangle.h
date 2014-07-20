@@ -22,6 +22,14 @@ public:
 		}
 		return false;
 	}
+
+	void GetSize(int *width, int *height) {
+		if (width)
+			*width = w;
+		if (height)
+			*height = h;
+	}
+
 	/* Retruns true if position changed */
 	bool SetPos(int x_pos, int y_pos) {
 		if(x_pos != x || y_pos != y){
