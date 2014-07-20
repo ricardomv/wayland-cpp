@@ -86,12 +86,14 @@ void Window::Resize(int w, int h){
 }
 
 void Window::run(){
+	float ratio;
 	int width, height;
 	char str[10];
 	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
 	while(input->running) {
 		display->dispatch();
 		GetSize(&width, &height); /* after configure event */
+		ratio = width / (float) height;
 		glViewport(0, 0, width, height);
 
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -107,14 +109,24 @@ void Window::run(){
 		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		sprintf(str,"%.1f fps", eglwindow->fps);
 		font->Render(str);
+
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+		glMatrixMode(GL_MODELVIEW);
+
+		glLoadIdentity();
+		glRotatef((input->pointer_x / width) * 360.0f, 0.f, 1.f, 0.f);
+		glRotatef((input->pointer_y / height) * 360.0f, 1.f, 0.f, 0.f);
+
 		glBegin(GL_TRIANGLES);
-	        glColor3f(1.f, 0.f, 0.f);
-	        glVertex3f(-0.6f, -0.4f, 0.f);
-	        glColor3f(0.f, 1.f, 0.f);
-	        glVertex3f(0.6f, -0.4f, 0.f);
-	        glColor3f(0.f, 0.f, 1.f);
-	        glVertex3f(0.f, 0.6f, 0.f);
-	    glEnd();
+			glColor3f(1.f, 0.f, 0.f);
+			glVertex3f(-0.6f, -0.4f, 0.f);
+			glColor3f(0.f, 1.f, 0.f);
+			glVertex3f(0.6f, -0.4f, 0.f);
+			glColor3f(0.f, 0.f, 1.f);
+			glVertex3f(0.f, 0.6f, 0.f);
+		glEnd();
 		eglwindow->SwapBuffers();
 	}
 }
