@@ -26,7 +26,7 @@ Window::Window(int width, int height)
 	eglwindow = egl->CreateWindow(surface->cobj, width, height);
 
 	// Create a pixmap font from a TrueType file.
-	font = new FTGLPixmapFont("/usr/share/fonts/TTF/DejaVuSans.ttf");
+	font = new FTGLTextureFont("/usr/share/fonts/TTF/DejaVuSans.ttf");
 	// If something went wrong, bail out.
 	if(font->Error())
 		throw "Could no load font";
@@ -92,8 +92,19 @@ void Window::run(){
 	while(input->running) {
 		display->dispatch();
 		GetSize(&width, &height); /* after configure event */
+		glViewport(0, 0, width, height);
 
 		glClear(GL_COLOR_BUFFER_BIT);
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glOrtho(0.0f, width,
+					0.0f, height,
+					-10000.0f, 10000.0f);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+
+		glTranslatef(0.0f, (height - font->Ascender()) * 1.0f, 0.0f);
+		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		sprintf(str,"%.1f fps", eglwindow->fps);
 		font->Render(str);
 		glBegin(GL_TRIANGLES);
