@@ -9,7 +9,10 @@ public:
 	struct wl_display *cobj;
 	Display(const char *name = NULL)
 					: Proxy((struct wl_proxy *)wl_display_connect(name))
-					, cobj((struct wl_display *)proxy_) {}
+					, cobj((struct wl_display *)proxy_) {
+						if (!cobj)
+							throw "Failed to connect to Wayland display";
+					}
 	Display(int fd)
 					: Proxy((struct wl_proxy *)wl_display_connect_to_fd(fd))
 					, cobj((struct wl_display *)proxy_) {}

@@ -17,21 +17,21 @@ Egl::Egl(struct wl_display *wl_dpy) {
 
 	display = eglGetDisplay(wl_dpy);
 	if (!eglInitialize(display, &major, &minor)) {
-		fprintf(stderr, "failed to initialize EGL\n");
+		throw "Failed to initialize EGL";
 	}
 
 	if (!eglBindAPI(EGL_OPENGL_API)) {
-		fprintf(stderr, "failed to bind EGL client API\n");
+		throw "Failed to bind EGL client API";
 	}
 
 	if (!eglChooseConfig(display, argb_cfg_attribs,
 				&argb_config, 1, &n) || n != 1) {
-		fprintf(stderr, "failed to choose argb EGL config\n");
+		throw "Failed to choose argb EGL config";
 	}
 	argb_ctx = eglCreateContext(display, argb_config,
 				EGL_NO_CONTEXT, NULL);
 	if (!argb_ctx) {
-		fprintf(stderr, "failed to create EGL context\n");
+		throw "Failed to create EGL context";
 	}
 }
 
