@@ -7,6 +7,7 @@
 
 Window::Window(int width, int height)
 		: Rectangle(0, 0, width, height)
+		, running(true)
 		, fullscreen(false) {
 	display = new Display;
 	global = new Global(display->get_registry());
@@ -90,7 +91,7 @@ void Window::run(){
 	int width, height;
 	char str[10];
 	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
-	while(input->running) {
+	while(running) {
 		display->dispatch();
 		GetSize(&width, &height); /* after configure event */
 		ratio = width / (float) height;

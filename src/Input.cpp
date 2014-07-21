@@ -88,7 +88,7 @@ void Input::KbrdHandleKey(void *data,
 	Input *input = static_cast<Input*>(data);
 	if (state_w == WL_KEYBOARD_KEY_STATE_PRESSED){
 		if (key == 1) /* Esc */
-			input->running = 0;
+			input->window->running = 0;
 		if (key == 33) /* F */
 			input->window->Fullscreen(true);
 		if (key == 34) /* G */

@@ -13,7 +13,6 @@ class Input
 	Pointer *pointer = NULL;
 public:
 	string name;
-	int running = 1;
 	float pointer_x;
 	float pointer_y;
 

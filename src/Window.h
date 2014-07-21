@@ -12,6 +12,7 @@ class Input;
 class Window : public Rectangle
 {
 public:
+	bool running = 1;
 	Window(int width, int height);
 	~Window();
 	void Fullscreen(bool value);
