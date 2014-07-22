@@ -97,7 +97,8 @@ void Window::run(){
 		ratio = width / (float) height;
 		glViewport(0, 0, width, height);
 
-		glClear(GL_COLOR_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
+		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glOrtho(0.0f, width,
@@ -120,13 +121,57 @@ void Window::run(){
 		glRotatef((input->pointer_x / width) * 360.0f, 0.f, 1.f, 0.f);
 		glRotatef((input->pointer_y / height) * 360.0f, 1.f, 0.f, 0.f);
 
-		glBegin(GL_TRIANGLES);
-			glColor3f(1.f, 0.f, 0.f);
-			glVertex3f(-0.6f, -0.4f, 0.f);
-			glColor3f(0.f, 1.f, 0.f);
-			glVertex3f(0.6f, -0.4f, 0.f);
-			glColor3f(0.f, 0.f, 1.f);
-			glVertex3f(0.f, 0.6f, 0.f);
+		//Multi-colored side - FRONT
+		glBegin(GL_POLYGON);
+			glColor3f( 1.0, 0.0, 0.0 ); glVertex3f(  0.5, -0.5, -0.5 ); // P1 is red
+			glColor3f( 0.0, 1.0, 0.0 ); glVertex3f(  0.5,  0.5, -0.5 ); // P2 is green
+			glColor3f( 0.0, 0.0, 1.0 ); glVertex3f( -0.5,  0.5, -0.5 ); // P3 is blue
+			glColor3f( 1.0, 0.0, 1.0 ); glVertex3f( -0.5, -0.5, -0.5 ); // P4 is purple
+		glEnd();
+
+		// White side - BACK
+		glBegin(GL_POLYGON);
+			glColor3f(   1.0,  1.0, 1.0 );
+			glVertex3f(  0.5, -0.5, 0.5 );
+			glVertex3f(  0.5,  0.5, 0.5 );
+			glVertex3f( -0.5,  0.5, 0.5 );
+			glVertex3f( -0.5, -0.5, 0.5 );
+		glEnd();
+
+		// Purple side - RIGHT
+		glBegin(GL_POLYGON);
+			glColor3f(  1.0,  0.0,  1.0 );
+			glVertex3f( 0.5, -0.5, -0.5 );
+			glVertex3f( 0.5,  0.5, -0.5 );
+			glVertex3f( 0.5,  0.5,  0.5 );
+			glVertex3f( 0.5, -0.5,  0.5 );
+		glEnd();
+
+		// Green side - LEFT
+		glBegin(GL_POLYGON);
+			glColor3f(   0.0,  1.0,  0.0 );
+			glVertex3f( -0.5, -0.5,  0.5 );
+			glVertex3f( -0.5,  0.5,  0.5 );
+			glVertex3f( -0.5,  0.5, -0.5 );
+			glVertex3f( -0.5, -0.5, -0.5 );
+		glEnd();
+
+		// Blue side - TOP
+		glBegin(GL_POLYGON);
+			glColor3f(   0.0,  0.0,  1.0 );
+			glVertex3f(  0.5,  0.5,  0.5 );
+			glVertex3f(  0.5,  0.5, -0.5 );
+			glVertex3f( -0.5,  0.5, -0.5 );
+			glVertex3f( -0.5,  0.5,  0.5 );
+		glEnd();
+
+		// Red side - BOTTOM
+		glBegin(GL_POLYGON);
+			glColor3f(   1.0,  0.0,  0.0 );
+			glVertex3f(  0.5, -0.5, -0.5 );
+			glVertex3f(  0.5, -0.5,  0.5 );
+			glVertex3f( -0.5, -0.5,  0.5 );
+			glVertex3f( -0.5, -0.5, -0.5 );
 		glEnd();
 		eglwindow->SwapBuffers();
 	}
