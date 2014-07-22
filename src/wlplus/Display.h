@@ -12,10 +12,15 @@ public:
 					, cobj((struct wl_display *)proxy_) {
 						if (!cobj)
 							throw "Failed to connect to Wayland display";
+						interface_ = &wl_display_interface;
 					}
 	Display(int fd)
 					: Proxy((struct wl_proxy *)wl_display_connect_to_fd(fd))
-					, cobj((struct wl_display *)proxy_) {}
+					, cobj((struct wl_display *)proxy_) {
+						if (!cobj)
+							throw "Failed to connect to Wayland display";
+						interface_ = &wl_display_interface;
+					}
 	~Display() {
 		wl_display_disconnect(cobj);
 		cobj = NULL;
