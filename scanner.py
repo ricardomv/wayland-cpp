@@ -1,4 +1,4 @@
-#! /bin/python
+#! /usr/bin/env python3
 
 import argparse
 parser = argparse.ArgumentParser()
@@ -29,10 +29,19 @@ types = {
 "array" : "struct wl_array *"
 }
 
-def get_class(interface, body):
-	return "class " + interface + " : public Proxy\n{\n" + body + "};\n\n"
+def emit_class(interface, contents):
+	name = get_object_name(interface.get('name'))
 
-def get_guards(interface, body):
+	body = "class " + name + " : public Proxy\n{\n"
+	body += "public:\n\t" + "struct " + interface.get('name') + " *cobj;"
+	body += "\n\t" + name + "(struct wl_proxy *proxy)"
+	body += "\n\t\t\t" + ": Proxy(proxy)"
+	body += "\n\t\t\t" + ", cobj((struct " + interface.get('name') + " *)proxy) {"
+	body += "\n\t\t" + "interface_ = &" + interface.get('name') + "_interface;"
+	body += "\n\t}\n" + contents + "};\n"
+	return body
+
+def emit_guards(interface, body):
 	guards = "#ifndef __"+interface.upper()+"_H_INCLUDED__\n"
 	guards += "#define __"+interface.upper()+"_H_INCLUDED__\n\n"
 	guards += "#include \"Proxy.h\"\n\n"
@@ -76,14 +85,16 @@ def format_request_body(request):
 	body = "marshal(" + interface.get('name').upper() + "_" + request.get('name').upper()
 	for arg in request.findall('arg'):
 		if arg.get("type") == "new_id":
+			body = "return "
 			if arg.get("interface"):
-				body = "return new " + get_object_name(arg.get("interface")) + \
-									"(marshal_constructor(" + interface.get('name').upper() + "_" + request.get('name').upper() + ", "\
-									"&" + arg.get("interface") + "_interface, NULL"
+				body += "new " + get_object_name(arg.get("interface")) + "("
+			body += "marshal_constructor(" +\
+					interface.get('name').upper() + "_" +\
+					request.get('name').upper()
+			if arg.get("interface"):
+				body += ", &" + arg.get("interface") + "_interface, NULL"
 			else:
-				body = "return marshal_constructor(" + interface.get('name').upper() + "_" + request.get('name').upper() + ", interface, name, interface->name, version"
-		elif (request.get("type") == "destructor"):
-			body = "marshal_constructor(" + interface.get('name').upper() + "_" + request.get('name').upper()
+				body += ", interface, name, interface->name, version"
 		else:
 			body += ", " + arg.get("name")
 			if arg.get("type") == "object":
@@ -93,7 +104,7 @@ def format_request_body(request):
 	body += ");"
 	return body
 
-def get_request_v2(interface, request):
+def get_request(interface, request):
 	name = request.get("name")
 	function = ""
 	arguments = ""
@@ -129,21 +140,15 @@ for interface in root.findall('interface'):
 	if name == "Display":
 		continue
 
-	body = "public:\n\t" + "struct " + interface.get('name') + " *cobj;"
-	body += "\n\t" + name + "(struct wl_proxy *proxy)"
-	body += "\n\t\t\t" + ": Proxy(proxy)"
-	body += "\n\t\t\t" + ", cobj((struct " + interface.get('name') + " *)proxy) {"
-	body += "\n\t\t" + "interface_ = &" + interface.get('name') + "_interface;"
-	body += "\n\t}\n\n"
+	body = ""
+	for request in interface.findall('request'):
+		body += get_request(interface, request)
 
 	for enum in interface.findall('enum'):
 		body += get_enum(enum)
 
-	for request in interface.findall('request'):
-		body += get_request_v2(interface, request)
-
 	header = open(args.libpath + "/" + name + ".h", 'w+')
 	header.write(
-				get_guards(name, 
-				get_class(name, 
+				emit_guards(name,
+				emit_class(interface,
 				body)))
