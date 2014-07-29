@@ -42,13 +42,13 @@ void Input::add(Pointer *ptr) {
 void Input::HandleCapabilities(void *data, struct wl_seat *wl_seat, uint32_t capabilities){
 	Input *input = static_cast<Input*>(data);
 
-	if (capabilities & WL_SEAT_CAPABILITY_POINTER)
+	if (capabilities & Seat::CAPABILITY_POINTER)
 		input->add(input->seat->get_pointer());
 
-	if (capabilities & WL_SEAT_CAPABILITY_KEYBOARD)
+	if (capabilities & Seat::CAPABILITY_KEYBOARD)
 		input->add(input->seat->get_keyboard());
 
-	if (capabilities & WL_SEAT_CAPABILITY_TOUCH)
+	if (capabilities & Seat::CAPABILITY_TOUCH)
 		cout << "Touch not implemented" << endl;
 }
 
@@ -86,7 +86,7 @@ void Input::KbrdHandleKey(void *data,
 				uint32_t key,
 				uint32_t state_w) {
 	Input *input = static_cast<Input*>(data);
-	if (state_w == WL_KEYBOARD_KEY_STATE_PRESSED){
+	if (state_w == Keyboard::KEY_STATE_PRESSED){
 		if (key == 1) /* Esc */
 			input->window->running = 0;
 		if (key == 33) /* F */

@@ -118,7 +118,6 @@ def get_enum(enum):
 			first = False
 		else:
 			snippet += ", \n\t\t"
-		snippet += interface.get("name").upper() + "_"
 		snippet += enum.get("name").upper() + "_"
 		snippet += entry.get("name").upper() + " = " + entry.get("value")
 	snippet += "\n\t};\n"

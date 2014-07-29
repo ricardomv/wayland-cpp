@@ -71,7 +71,7 @@ void Window::Fullscreen(bool value){
 		return;
 	fullscreen = value;
 	if (value){
-		shellsurface->set_fullscreen(WL_SHELL_SURFACE_FULLSCREEN_METHOD_DEFAULT,0,NULL);
+		shellsurface->set_fullscreen(ShellSurface::FULLSCREEN_METHOD_DEFAULT,0,NULL);
 		display->dispatch(); /* get configure event and update window size */
 	} else {
 		shellsurface->set_toplevel();
