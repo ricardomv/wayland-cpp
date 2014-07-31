@@ -12,7 +12,8 @@ class Input;
 class Window : public Rectangle
 {
 public:
-	bool running = 1;
+	bool running;
+	bool fullscreen;
 	Window(int width, int height);
 	~Window();
 	void Fullscreen(bool value);
@@ -27,7 +28,6 @@ private:
 	Egl *egl;
 	EglWindow *eglwindow;
 	FTGLTextureFont *font;
-	bool fullscreen;
 	static void HandlePing(void *data, struct wl_shell_surface *shell_surface, uint32_t serial);
 	static void HandleConfigure(void *data, struct wl_shell_surface *shell_surface, uint32_t edges, int32_t width, int32_t height);
 	static void HandlePopupDone(void *data, struct wl_shell_surface *shell_surface);

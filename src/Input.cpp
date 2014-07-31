@@ -90,9 +90,7 @@ void Input::KbrdHandleKey(void *data,
 		if (key == 1) /* Esc */
 			input->window->running = 0;
 		if (key == 33) /* F */
-			input->window->Fullscreen(true);
-		if (key == 34) /* G */
-			input->window->Fullscreen(false);
+			input->window->Fullscreen(!input->window->fullscreen);
 	}
 }
 
