@@ -26,16 +26,14 @@ Window::Window(int width, int height)
 	egl = new Egl(display->cobj);
 	eglwindow = egl->CreateWindow(surface->cobj, width, height);
 
-	// Create a pixmap font from a TrueType file.
 	font = new FTGLTextureFont("/usr/share/fonts/TTF/DejaVuSans.ttf");
-	// If something went wrong, bail out.
 	if(font->Error())
 		throw "Could no load font";
-	// Set the font size and render a small text.
 	font->FaceSize(14);
 }
 
 Window::~Window() {
+	delete font;
 	delete eglwindow;
 	delete egl;
 	delete shellsurface;
