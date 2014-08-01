@@ -82,15 +82,13 @@ def format_request_args(request):
 	return arguments
 
 def format_request_body(request):
-	body = "marshal(" + interface.get('name').upper() + "_" + request.get('name').upper()
+	body = "marshal(" + request.get('name').upper()
 	for arg in request.findall('arg'):
 		if arg.get("type") == "new_id":
 			body = "return "
 			if arg.get("interface"):
 				body += "new " + get_object_name(arg.get("interface")) + "("
-			body += "marshal_constructor(" +\
-					interface.get('name').upper() + "_" +\
-					request.get('name').upper()
+			body += "marshal_constructor(" + request.get('name').upper()
 			if arg.get("interface"):
 				body += ", &" + arg.get("interface") + "_interface, NULL"
 			else:
@@ -134,6 +132,19 @@ def get_enum(enum):
 	snippet += "\n\t};\n"
 	return snippet
 
+def get_requests_enum(interface):
+	body = "private:\n"
+	body += "\tenum requests {\n\t\t"
+	first = True
+	for request in interface.findall('request'):
+		if first:
+			first = False
+		else:
+			body += ", \n\t\t"
+		body += request.get("name").upper()
+	body += "\n\t};\n"
+	return body
+
 for interface in root.findall('interface'):
 	name = get_object_name(interface.get('name'))
 
@@ -146,6 +157,9 @@ for interface in root.findall('interface'):
 
 	for enum in interface.findall('enum'):
 		body += get_enum(enum)
+
+	if interface.find('request'):
+		body += get_requests_enum(interface)
 
 	header = open(args.libpath + "/" + name + ".h", 'w+')
 	header.write(

@@ -21,6 +21,5 @@ Author: Ricardo Vieira <ricardo.vieira@tecnico.ulisboa.pt>
 
  - find a new way to handle listeners and emit them with scanner
  - decide were to put externs wl_*_interface
- - add methods opcodes in classes
  - rewritte scanner to be more readable
  - implement exceptions
