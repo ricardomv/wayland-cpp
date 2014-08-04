@@ -20,7 +20,7 @@ def get_object_name(interface):
 
 types = {	
 "int" : "int32_t ",
-"fd" : "uint32_t ",
+"fd" : "int32_t ",
 "new_id" : "",
 "uint" : "uint32_t ",
 "fixed" : "wl_fixed_t ",
