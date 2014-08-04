@@ -66,17 +66,21 @@ public:
 		return wl_display_read_events(cobj);
 	}
 
-	enum error {
-		WL_DISPLAY_ERROR_INVALID_OBJECT = 0, 
-		WL_DISPLAY_ERROR_INVALID_METHOD = 1, 
-		WL_DISPLAY_ERROR_NO_MEMORY = 2
-	};
 	Callback *sync() {
-		return new Callback(marshal_constructor(WL_DISPLAY_SYNC, &wl_callback_interface, NULL));
+		return new Callback(marshal_constructor(SYNC, &wl_callback_interface, NULL));
 	}
 	Registry *get_registry() {
-		return new Registry(marshal_constructor(WL_DISPLAY_GET_REGISTRY, &wl_registry_interface, NULL));
+		return new Registry(marshal_constructor(GET_REGISTRY, &wl_registry_interface, NULL));
 	}
+	enum error {
+		ERROR_INVALID_OBJECT = 0,
+		ERROR_INVALID_METHOD = 1,
+		ERROR_NO_MEMORY = 2
+	};
+private:
+	enum requests {
+		SYNC,
+		GET_REGISTRY
+	};
 };
-
 #endif
