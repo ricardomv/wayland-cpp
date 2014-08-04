@@ -53,20 +53,20 @@ extern "C" {
 
 namespace wayland {
 
-#include "Callback.h"
-#include "Buffer.h"
-#include "Output.h"
-#include "Region.h"
-#include "Surface.h"
-#include "Touch.h"
-#include "Pointer.h"
-#include "Keyboard.h"
-#include "Seat.h"
-#include "ShellSurface.h"
-#include "Shell.h"
-#include "Compositor.h"
-#include "Registry.h"
-#include "Display.h"
+#include "Callback.hpp"
+#include "Buffer.hpp"
+#include "Output.hpp"
+#include "Region.hpp"
+#include "Surface.hpp"
+#include "Touch.hpp"
+#include "Pointer.hpp"
+#include "Keyboard.hpp"
+#include "Seat.hpp"
+#include "ShellSurface.hpp"
+#include "Shell.hpp"
+#include "Compositor.hpp"
+#include "Registry.hpp"
+#include "Display.hpp"
 
 } // namespace wayland
 

@@ -1,4 +1,4 @@
-#include "Egl.h"
+#include "Egl.hpp"
 #include <GL/gl.h>
 #include <sys/time.h>
 

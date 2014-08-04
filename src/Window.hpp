@@ -1,5 +1,5 @@
 #include "wlplus"
-#include "Rectangle.h"
+#include "Rectangle.hpp"
 #include <FTGL/ftgl.h>
 
 using namespace wayland;

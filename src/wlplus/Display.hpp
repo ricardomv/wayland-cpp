@@ -1,7 +1,7 @@
 #ifndef __DISPLAY_H_INCLUDED__
 #define __DISPLAY_H_INCLUDED__
 
-#include "Proxy.h"
+#include "Proxy.hpp"
 
 class Display : public Proxy
 {

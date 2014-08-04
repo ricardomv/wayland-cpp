@@ -44,7 +44,7 @@ def emit_class(interface, contents):
 def emit_guards(interface, body):
 	guards = "#ifndef __"+interface.upper()+"_H_INCLUDED__\n"
 	guards += "#define __"+interface.upper()+"_H_INCLUDED__\n\n"
-	guards += "#include \"Proxy.h\"\n\n"
+	guards += "#include \"Proxy.hpp\"\n\n"
 	guards += body
 	guards += "#endif\n"
 	return guards
@@ -180,7 +180,7 @@ for interface in root.findall('interface'):
 	if interface.find('request'):
 		body += get_requests_enum(interface)
 
-	header = open(args.libpath + "/" + name + ".h", 'w+')
+	header = open(args.libpath + "/" + name + ".hpp", 'w+')
 	header.write(
 				emit_guards(name,
 				emit_class(interface,

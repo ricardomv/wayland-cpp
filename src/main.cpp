@@ -1,4 +1,4 @@
-#include "Window.h"
+#include "Window.hpp"
 #include <iostream>
 
 using namespace std;

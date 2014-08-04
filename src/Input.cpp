@@ -1,5 +1,5 @@
-#include "Input.h"
-#include "Window.h"
+#include "Input.hpp"
+#include "Window.hpp"
 
 Input::Input(Window *window_, Seat *seat_)
 				: window(window_)

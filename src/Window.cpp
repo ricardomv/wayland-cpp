@@ -1,8 +1,8 @@
 #include "config.h"
-#include "Window.h"
-#include "Global.h"
-#include "Input.h"
-#include "Egl.h"
+#include "Window.hpp"
+#include "Global.hpp"
+#include "Input.hpp"
+#include "Egl.hpp"
 #include <GL/gl.h>
 
 Window::Window(int width, int height)
