@@ -157,8 +157,8 @@ def get_events(interface):
 				arguments += types[arg.get("type")]
 			arguments += arg.get("name")
 		body += "\t\tvoid (*" + event.get("name") + ")(void *data,\n\t\t\t\t\tstruct "
-		body += interface.get("name") + " *" + interface.get("name") + arguments + ");"
-	body += "\n\t};\n"
+		body += interface.get("name") + " *" + interface.get("name") + arguments + ");\n"
+	body += "\t};\n"
 	return body
 
 for interface in root.findall('interface'):
