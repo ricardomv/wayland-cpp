@@ -145,6 +145,22 @@ def get_requests_enum(interface):
 	body += "\n\t};\n"
 	return body
 
+def get_events(interface):
+	body = "\tstruct listener {\n"
+	for event in interface.findall('event'):
+		arguments = ""
+		for arg in event.findall('arg'):
+			arguments += ",\n\t\t\t\t\t"
+			if arg.get("type") == "new_id" or arg.get("type") == "object":
+				arguments += "struct " + arg.get("interface") + " *"
+			else:
+				arguments += types[arg.get("type")]
+			arguments += arg.get("name")
+		body += "\t\tvoid (*" + event.get("name") + ")(void *data,\n\t\t\t\t\tstruct "
+		body += interface.get("name") + " *" + interface.get("name") + arguments + ");"
+	body += "\n\t};\n"
+	return body
+
 for interface in root.findall('interface'):
 	name = get_object_name(interface.get('name'))
 
@@ -157,6 +173,9 @@ for interface in root.findall('interface'):
 
 	for enum in interface.findall('enum'):
 		body += get_enum(enum)
+
+	if interface.find('event'):
+		body += get_events(interface)
 
 	if interface.find('request'):
 		body += get_requests_enum(interface)

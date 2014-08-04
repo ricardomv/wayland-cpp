@@ -13,7 +13,7 @@ public:
 		compositor(NULL),
 		shell(NULL),
 		seat(NULL) {
-		static const struct wl_registry_listener registry_all = {
+		static const struct Registry::listener registry_all = {
 			Global::HandleGlobal, 
 			Global::HandleGlobalRemove
 		};

@@ -4,7 +4,7 @@
 Input::Input(Window *window_, Seat *seat_)
 				: window(window_)
 				, seat(seat_) {
-	static const struct wl_seat_listener seat_listener = {
+	static const struct Seat::listener seat_listener = {
 		Input::HandleCapabilities,
 		Input::HandleName
 	};
@@ -17,7 +17,7 @@ Input::~Input() {
 
 void Input::add(Keyboard *kbrd) {
 	keyboard = kbrd;
-	static const struct wl_keyboard_listener kbrd_listeners = {
+	static const struct Keyboard::listener kbrd_listeners = {
 		Input::KbrdHandleKeymap,
 		Input::KbrdHandleEnter,
 		Input::KbrdHandleLeave,
@@ -28,7 +28,7 @@ void Input::add(Keyboard *kbrd) {
 }
 void Input::add(Pointer *ptr) {
 	pointer = ptr;
-	static const struct wl_pointer_listener ptr_listeners = {
+	static const struct Pointer::listener ptr_listeners = {
 		Input::PtrHandleEnter,
 		Input::PtrHandleLeave,
 		Input::PtrHandleMotion,

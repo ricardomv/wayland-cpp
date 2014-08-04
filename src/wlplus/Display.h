@@ -77,6 +77,15 @@ public:
 		ERROR_INVALID_METHOD = 1,
 		ERROR_NO_MEMORY = 2
 	};
+	struct listener {
+		void (*error)(void *data,
+					struct wl_display *wl_display,
+					struct wl_display *object_id,
+					uint32_t code,
+					const char *message);		void (*delete_id)(void *data,
+					struct wl_display *wl_display,
+					uint32_t id);
+	};
 private:
 	enum requests {
 		SYNC,
