@@ -126,7 +126,7 @@ def get_enum(enum):
 		if first:
 			first = False
 		else:
-			snippet += ", \n\t\t"
+			snippet += ",\n\t\t"
 		snippet += enum.get("name").upper() + "_"
 		snippet += entry.get("name").upper() + " = " + entry.get("value")
 	snippet += "\n\t};\n"
@@ -140,7 +140,7 @@ def get_requests_enum(interface):
 		if first:
 			first = False
 		else:
-			body += ", \n\t\t"
+			body += ",\n\t\t"
 		body += request.get("name").upper()
 	body += "\n\t};\n"
 	return body
