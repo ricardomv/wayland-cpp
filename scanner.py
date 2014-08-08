@@ -64,24 +64,17 @@ def format_request_return(request):
 	return ret_type
 
 def format_request_args(request):
-	first = True
-	arguments = ""
+	arguments = []
 	for arg in request.findall('arg'):
 		if arg.get("type") == "new_id":
 			if not arg.get("interface"):
-				arguments += ", const struct wl_interface *interface, uint32_t version"
+				arguments.append("const struct wl_interface *interface, uint32_t version")
 			continue
-
-		if first:
-			first = False
-		else:
-			arguments += ", "
-
 		if arg.get("type") == "object":
-			arguments += get_object_name(arg.get("interface"))+ " *"
+			arguments.append(get_object_name(arg.get("interface"))+ " *")
 		else:
-			arguments += types[arg.get("type")] 
-		arguments += arg.get("name")
+			arguments.append(types[arg.get("type")])
+		arguments[-1] += arg.get("name")
 	return arguments
 
 def format_request_body(request):
@@ -107,10 +100,8 @@ def format_request_body(request):
 
 def get_request(interface, request):
 	name = request.get("name")
-	function = ""
-	arguments = ""
 
-	arguments = format_request_args(request)
+	arguments = ", ".join(format_request_args(request))
 	return_type = format_request_return(request)
 	body = format_request_body(request)
 
@@ -124,27 +115,22 @@ def get_request(interface, request):
 
 def get_enum(enum):
 	snippet = "\tenum " + enum.get("name") + " {\n\t\t"
-	first = True
+	enums = []
 	for entry in enum.findall('entry'):
-		if first:
-			first = False
-		else:
-			snippet += ",\n\t\t"
-		snippet += enum.get("name").upper() + "_"
-		snippet += entry.get("name").upper() + " = " + entry.get("value")
+		enums.append(enum.get("name").upper() + "_" +\
+					   entry.get("name").upper() + " = " +\
+					   entry.get("value"))
+	snippet += ",\n\t\t".join(enums)
 	snippet += "\n\t};\n"
 	return snippet
 
 def get_requests_enum(interface):
 	body = "private:\n"
 	body += "\tenum requests {\n\t\t"
-	first = True
+	requests = []
 	for request in interface.findall('request'):
-		if first:
-			first = False
-		else:
-			body += ",\n\t\t"
-		body += request.get("name").upper()
+		requests.append(request.get("name").upper())
+	body += ",\n\t\t".join(requests)
 	body += "\n\t};\n"
 	return body
 
