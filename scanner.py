@@ -29,25 +29,28 @@ types = {
 "array" : "struct wl_array *"
 }
 
-def emit_class(interface, contents):
-	name = get_object_name(interface.get('name'))
+CLASS = '''
+class %(name)s : public Proxy
+{
+public:
+	struct %(interface)s *cobj;
+	%(name)s(struct wl_proxy *proxy)
+			: Proxy(proxy)
+			, cobj((struct %(interface)s *)proxy) {
+		interface_ = &%(interface)s_interface;
+	}
+%(body)s
+};
+'''
 
-	body = "class " + name + " : public Proxy\n{\n"
-	body += "public:\n\t" + "struct " + interface.get('name') + " *cobj;"
-	body += "\n\t" + name + "(struct wl_proxy *proxy)"
-	body += "\n\t\t\t" + ": Proxy(proxy)"
-	body += "\n\t\t\t" + ", cobj((struct " + interface.get('name') + " *)proxy) {"
-	body += "\n\t\t" + "interface_ = &" + interface.get('name') + "_interface;"
-	body += "\n\t}\n" + contents + "};\n"
-	return body
+GUARDS = '''
+#ifndef __%(interface)s_H_INCLUDED__
+#define __%(interface)s_H_INCLUDED__
 
-def emit_guards(interface, body):
-	guards = "#ifndef __"+interface.upper()+"_H_INCLUDED__\n"
-	guards += "#define __"+interface.upper()+"_H_INCLUDED__\n\n"
-	guards += "#include \"Proxy.hpp\"\n\n"
-	guards += body
-	guards += "#endif\n"
-	return guards
+#include "Proxy.hpp"
+%(class)s
+#endif
+'''
 
 def format_request_return(request):
 	ret_type = "void "
@@ -181,7 +184,13 @@ for interface in root.findall('interface'):
 		body += get_requests_enum(interface)
 
 	header = open(args.libpath + "/" + name + ".hpp", 'w+')
-	header.write(
-				emit_guards(name,
-				emit_class(interface,
-				body)))
+	header.write(GUARDS %
+				{
+				"interface": interface.get('name').upper(),
+				"class": CLASS %
+					{
+					"name": name,
+					"interface": interface.get('name'),
+					"body": body
+					}
+				})
