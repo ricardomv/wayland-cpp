@@ -4,11 +4,11 @@
 Input::Input(Window *window_, Seat *seat_)
 				: window(window_)
 				, seat(seat_) {
-	static const struct Seat::listener seat_listener = {
+	static const struct Seat::Listener seat_listener = {
 		Input::HandleCapabilities,
 		Input::HandleName
 	};
-	seat->add_listener((const struct wl_listener *)&seat_listener, this);
+	seat->AddListener((const struct wl_listener *)&seat_listener, this);
 }
 Input::~Input() {
 	delete keyboard;
@@ -17,38 +17,38 @@ Input::~Input() {
 
 void Input::add(Keyboard *kbrd) {
 	keyboard = kbrd;
-	static const struct Keyboard::listener kbrd_listeners = {
+	static const struct Keyboard::Listener kbrd_listeners = {
 		Input::KbrdHandleKeymap,
 		Input::KbrdHandleEnter,
 		Input::KbrdHandleLeave,
 		Input::KbrdHandleKey,
 		Input::KbrdHandleModifiers
 	};
-	keyboard->add_listener((const struct wl_listener *)&kbrd_listeners, this);
+	keyboard->AddListener((const struct wl_listener *)&kbrd_listeners, this);
 }
 void Input::add(Pointer *ptr) {
 	pointer = ptr;
-	static const struct Pointer::listener ptr_listeners = {
+	static const struct Pointer::Listener ptr_listeners = {
 		Input::PtrHandleEnter,
 		Input::PtrHandleLeave,
 		Input::PtrHandleMotion,
 		Input::PtrHandleButton,
 		Input::PtrHandleAxis
 	};
-	pointer->add_listener((const struct wl_listener *)&ptr_listeners, this);
+	pointer->AddListener((const struct wl_listener *)&ptr_listeners, this);
 }
 
 //static
 void Input::HandleCapabilities(void *data, struct wl_seat *wl_seat, uint32_t capabilities){
 	Input *input = static_cast<Input*>(data);
 
-	if (capabilities & Seat::CAPABILITY_POINTER)
-		input->add(input->seat->get_pointer());
+	if (capabilities & Seat::CapabilityPointer)
+		input->add(input->seat->GetPointer());
 
-	if (capabilities & Seat::CAPABILITY_KEYBOARD)
-		input->add(input->seat->get_keyboard());
+	if (capabilities & Seat::CapabilityKeyboard)
+		input->add(input->seat->GetKeyboard());
 
-	if (capabilities & Seat::CAPABILITY_TOUCH)
+	if (capabilities & Seat::CapabilityTouch)
 		cout << "Touch not implemented" << endl;
 }
 
@@ -86,7 +86,7 @@ void Input::KbrdHandleKey(void *data,
 				uint32_t key,
 				uint32_t state_w) {
 	Input *input = static_cast<Input*>(data);
-	if (state_w == Keyboard::KEY_STATE_PRESSED){
+	if (state_w == Keyboard::KeyStatePressed){
 		if (key == 1) /* Esc */
 			input->window->running = 0;
 		if (key == 33) /* F */

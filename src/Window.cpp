@@ -10,19 +10,19 @@ Window::Window(int width, int height)
 		, running(true)
 		, fullscreen(false) {
 	display = new Display;
-	global = new Global(display->get_registry());
-	display->roundtrip();
+	global = new Global(display->GetRegistry());
+	display->Roundtrip();
 	input = new Input(this, global->seat);
-	surface = global->compositor->create_surface();
-	shellsurface = global->shell->get_shell_surface(surface);
-	static const struct ShellSurface::listener shell_surface_listener = {
+	surface = global->compositor->CreateSurface();
+	shellsurface = global->shell->GetShellSurface(surface);
+	static const struct ShellSurface::Listener shell_surface_listener = {
 		Window::HandlePing,
 		Window::HandleConfigure,
 		Window::HandlePopupDone
 	};
-	shellsurface->add_listener((const struct wl_listener *)&shell_surface_listener, this);
-	shellsurface->set_title("cairo-wayland-cpp");
-	shellsurface->set_toplevel();
+	shellsurface->AddListener((const struct wl_listener *)&shell_surface_listener, this);
+	shellsurface->SetTitle("cairo-wayland-cpp");
+	shellsurface->SetToplevel();
 	egl = new Egl(display->cobj);
 	eglwindow = egl->CreateWindow(surface->cobj, width, height);
 
@@ -47,7 +47,7 @@ void Window::HandlePing(void *data,
 					struct wl_shell_surface *shell_surface,
 					uint32_t serial){
 	Window *window = static_cast<Window *>(data);
-	window->shellsurface->pong(serial);
+	window->shellsurface->Pong(serial);
 }
 
 void Window::HandleConfigure(void *data,
@@ -69,10 +69,10 @@ void Window::Fullscreen(bool value){
 		return;
 	fullscreen = value;
 	if (value){
-		shellsurface->set_fullscreen(ShellSurface::FULLSCREEN_METHOD_DEFAULT,0,NULL);
-		display->dispatch(); /* get configure event and update window size */
+		shellsurface->SetFullscreen(ShellSurface::FullscreenMethodScale,0,NULL);
+		display->Dispatch(); /* get configure event and update window size */
 	} else {
-		shellsurface->set_toplevel();
+		shellsurface->SetToplevel();
 		Resize(oldwidth, oldheight);
 	}
 }
@@ -90,7 +90,7 @@ void Window::run(){
 	char str[10];
 	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);
 	while(running) {
-		display->dispatch();
+		display->Dispatch();
 		GetSize(&width, &height); /* after configure event */
 		ratio = width / (float) height;
 		glViewport(0, 0, width, height);

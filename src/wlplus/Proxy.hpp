@@ -15,12 +15,12 @@ public:
 			destroy();
 	}
 
-	struct wl_proxy *create(struct wl_proxy *factory,
+	struct wl_proxy *Create(struct wl_proxy *factory,
 					const struct wl_interface *interface){
 		return wl_proxy_create(factory,interface);
 	}
 
-	struct wl_proxy *marshal_constructor(uint32_t opcode,
+	struct wl_proxy *MarshalConstructor(uint32_t opcode,
 					const struct wl_interface *interface,
 					...){
 		union wl_argument args[WL_CLOSURE_MAX_ARGS];
@@ -31,17 +31,17 @@ public:
 					 args, WL_CLOSURE_MAX_ARGS, ap);
 		va_end(ap);
 
-		return marshal_array_constructor(opcode, args, interface);
+		return MarshalArrayConstructor(opcode, args, interface);
 	}
 
-	struct wl_proxy *marshal_array_constructor(uint32_t opcode,
+	struct wl_proxy *MarshalArrayConstructor(uint32_t opcode,
 					union wl_argument *args,
 					const struct wl_interface *interface){
 		return wl_proxy_marshal_array_constructor(proxy_, opcode,
 							args, interface);
 	}
 
-	void marshal(uint32_t opcode, ...){
+	void Marshal(uint32_t opcode, ...){
 		union wl_argument args[WL_CLOSURE_MAX_ARGS];
 		va_list ap;
 
@@ -50,10 +50,10 @@ public:
 					 args, WL_CLOSURE_MAX_ARGS, ap);
 		va_end(ap);
 
-		marshal_array_constructor(opcode, args, NULL);
+		MarshalArray(opcode, args);
 	}
 
-	void marshal_array(uint32_t opcode,
+	void MarshalArray(uint32_t opcode,
 					union wl_argument *args) {
 		wl_proxy_marshal_array_constructor(proxy_, opcode, args, NULL);
 	}
@@ -62,36 +62,36 @@ public:
 		wl_proxy_destroy(proxy_);
 	}
 
-	int add_listener(const struct wl_listener *listener, void *data){
+	int AddListener(const struct wl_listener *listener, void *data){
 		return wl_proxy_add_listener(proxy_, (void (**)(void)) listener, (void *)data);
 	}
 
-	const void *get_listener(){
+	const void *GetListener(){
 		return wl_proxy_get_listener(proxy_);
 	}
 
-	int add_dispatcher(wl_dispatcher_func_t dispatcher_func,
+	int AddDispatcher(wl_dispatcher_func_t dispatcher_func,
 					const void * dispatcher_data, void *data){
 		return wl_proxy_add_dispatcher(proxy_, dispatcher_func, dispatcher_data, data);
 	}
 
-	void set_user_data(void *user_data) {
+	void SetUserData(void *user_data) {
 		wl_proxy_set_user_data(proxy_, user_data);
 	}
 
-	void *get_user_data(){
+	void *GetUserData(){
 		return wl_proxy_get_user_data(proxy_);
 	}
 
-	uint32_t get_id(){
+	uint32_t GetId(){
 		return wl_proxy_get_id(proxy_);
 	}
 
-	const char *get_class(){
+	const char *GetClass(){
 		return wl_proxy_get_class(proxy_);
 	}
 
-	void set_queue(struct wl_event_queue *queue) {
+	void SetQueue(struct wl_event_queue *queue) {
 		wl_proxy_set_queue(proxy_, queue);
 	}
 private:

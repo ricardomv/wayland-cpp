@@ -13,11 +13,11 @@ public:
 		compositor(NULL),
 		shell(NULL),
 		seat(NULL) {
-		static const struct Registry::listener registry_all = {
+		static const struct Registry::Listener registry_all = {
 			Global::HandleGlobal, 
 			Global::HandleGlobalRemove
 		};
-		registry->add_listener((const struct wl_listener *)&registry_all, this);
+		registry->AddListener((const struct wl_listener *)&registry_all, this);
 	}
 
 	~Global(){
@@ -33,14 +33,14 @@ public:
 				uint32_t version) {
 		Global *global = static_cast<Global *>(data);
 		if (strcmp(interface, "wl_compositor") == 0) {
-			global->compositor = new Compositor(global->registry->bind(name, &wl_compositor_interface, version));
+			global->compositor = new Compositor(global->registry->Bind(name, &wl_compositor_interface, version));
 		} else if (strcmp(interface, "wl_output") == 0) {
 		} else if (strcmp(interface, "wl_seat") == 0) {
-			global->seat = new Seat(global->registry->bind(name, &wl_seat_interface, version));
+			global->seat = new Seat(global->registry->Bind(name, &wl_seat_interface, version));
 		} else if (strcmp(interface, "wl_shm") == 0) {
 		} else if (strcmp(interface, "wl_text_input_manager") == 0) {
 		} else if (strcmp(interface, "wl_shell") == 0){
-			global->shell = new Shell(global->registry->bind(name, &wl_shell_interface, version));
+			global->shell = new Shell(global->registry->Bind(name, &wl_shell_interface, version));
 		}
 	}
 	static void HandleGlobalRemove(void *data,

@@ -10,13 +10,16 @@ import xml.etree.ElementTree as etree
 tree = etree.parse(args.protocol)
 root = tree.getroot()
 
-def get_object_name(interface):
-	interface = interface.lstrip("wl_")
+def convert_name(interface):
 	interface = interface.split("_")
 	name = ""
 	for word in interface:
 		name += word.capitalize()
 	return name
+
+def get_object_name(interface):
+	interface = interface.lstrip("wl_")
+	return convert_name(interface)
 
 types = {	
 "int" : "int32_t ",
@@ -78,13 +81,13 @@ def format_request_args(request):
 	return arguments
 
 def format_request_body(request):
-	body = "marshal(" + request.get('name').upper()
+	body = "Marshal(" + request.get('name').upper()
 	for arg in request.findall('arg'):
 		if arg.get("type") == "new_id":
 			body = "return "
 			if arg.get("interface"):
 				body += "new " + get_object_name(arg.get("interface")) + "("
-			body += "marshal_constructor(" + request.get('name').upper()
+			body += "MarshalConstructor(" + request.get('name').upper()
 			if arg.get("interface"):
 				body += ", &" + arg.get("interface") + "_interface, NULL"
 			else:
@@ -108,25 +111,25 @@ def get_request(interface, request):
 	if (request.get("type") == "destructor"):
 		function = "\t~" + get_object_name(interface.get('name')) + "() {\n"
 	else:
-		function = "\t" + return_type + name + "(" + arguments + ") {\n"
+		function = "\t" + return_type + convert_name(name) + "(" + arguments + ") {\n"
 	function += "\t\t" + body + "\n"
 	function += "\t}\n"
 	return function
 
 def get_enum(enum):
-	snippet = "\tenum " + enum.get("name") + " {\n\t\t"
+	snippet = "\tenum " + convert_name(enum.get("name")) + " {\n\t\t"
 	enums = []
 	for entry in enum.findall('entry'):
-		enums.append(enum.get("name").upper() + "_" +\
-					   entry.get("name").upper() + " = " +\
-					   entry.get("value"))
+		enums.append(convert_name(enum.get("name")) +\
+						convert_name(entry.get("name")) + " = " +\
+						entry.get("value"))
 	snippet += ",\n\t\t".join(enums)
 	snippet += "\n\t};\n"
 	return snippet
 
 def get_requests_enum(interface):
 	body = "private:\n"
-	body += "\tenum requests {\n\t\t"
+	body += "\tenum Requests {\n\t\t"
 	requests = []
 	for request in interface.findall('request'):
 		requests.append(request.get("name").upper())
@@ -135,7 +138,7 @@ def get_requests_enum(interface):
 	return body
 
 def get_events(interface):
-	body = "\tstruct listener {\n"
+	body = "\tstruct Listener {\n"
 	for event in interface.findall('event'):
 		arguments = ""
 		for arg in event.findall('arg'):
