@@ -22,7 +22,8 @@ void Input::add(Keyboard *kbrd) {
 		Input::KbrdHandleEnter,
 		Input::KbrdHandleLeave,
 		Input::KbrdHandleKey,
-		Input::KbrdHandleModifiers
+		Input::KbrdHandleModifiers,
+		Input::KbrdHandleRepeatInfo
 	};
 	keyboard->AddListener((const struct wl_listener *)&kbrd_listeners, this);
 }
@@ -103,6 +104,11 @@ void Input::KbrdHandleModifiers(void *data,
 				uint32_t mods_locked,
 				uint32_t group) {}
 
+//static
+void Input::KbrdHandleRepeatInfo(void *data,
+					struct wl_keyboard *wl_keyboard,
+					int32_t rate,
+					int32_t delay) {}
 
 //static
 void Input::PtrHandleEnter(void *data,

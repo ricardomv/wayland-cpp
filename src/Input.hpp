@@ -52,6 +52,10 @@ public:
 					uint32_t mods_latched,
 					uint32_t mods_locked,
 					uint32_t group);
+	static void KbrdHandleRepeatInfo(void *data,
+					struct wl_keyboard *wl_keyboard,
+					int32_t rate,
+					int32_t delay);
 
 	static void PtrHandleEnter(void *data,
 					struct wl_pointer *ptr,
